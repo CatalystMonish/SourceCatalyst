@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginStart="30dp"
+    android:layout_marginEnd="30dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+   <LinearLayout
+       android:layout_margin="10dp"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical">
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Make sure you login using the
+same account you used to
+purchase the course!"
+           android:textColor="@color/white"
+           android:fontFamily="@font/main"
+           android:textSize="17sp"/>
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:paddingTop="10dp"
+               android:paddingStart="10dp"
+               android:paddingEnd="10dp"
+               android:paddingBottom="10dp"
+               android:layout_gravity="center"
+               android:text="Close"
+               android:background="@drawable/btn_bg_round_blue"
+               android:textColor="@color/white"
+               android:fontFamily="@font/main"/>
+
+   </LinearLayout>
+</LinearLayout>
