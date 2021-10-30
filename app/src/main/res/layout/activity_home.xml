@@ -47,6 +47,13 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="match_parent"
+            android:scaleType="centerCrop"
+            app:lottie_loop="true"
+            android:layout_height="match_parent"
+            app:lottie_rawRes="@raw/ic_back"
+            app:lottie_autoPlay="true"/>
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/home_swipe"
         android:layout_width="match_parent"
@@ -68,19 +75,34 @@
         android:layout_marginStart="20dp"
         android:textSize="20sp"
         android:fontFamily="@font/main"/>
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
     <TextView
         android:id="@+id/tv_task_no"
-        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Task 00"
         android:textColor="@color/white"
-        android:layout_marginStart="20dp"
         android:textSize="18sp"
         android:background="@drawable/btn_bg_round_yellow"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:fontFamily="@font/main"/>
+                <TextView
+                    android:id="@+id/tv_task_start_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Start Date"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/main"
+                    android:layout_gravity="center"
+                    android:textSize="15sp"
+                    android:layout_marginStart="10dp"/>
+            </LinearLayout>
     <com.skydoves.progressview.ProgressView
         android:id="@+id/progress_day"
         android:layout_width="match_parent"
@@ -131,7 +153,7 @@
             android:textSize="16sp"
             android:fontFamily="@font/main"
             android:textColor="@color/white"
-            android:text="Counter App: Make an app to show increment of numbers. With every click on the button, the counter should increase."/>
+            android:text="loading your task...\n\n\n\n\n\n"/>
     </androidx.cardview.widget.CardView>
             <LinearLayout
                 android:layout_marginTop="10dp"
@@ -143,7 +165,7 @@
         android:id="@+id/btn_guide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Manuals"
+        android:text="Details"
         android:background="@drawable/btn_bg_round_blue"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
@@ -173,6 +195,8 @@
                     android:textColor="@color/white"/>
             </LinearLayout>
     <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_hide_previous"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -182,6 +206,8 @@
         android:textColor="@color/white"
         android:text="Previous Tasks"/>
     <androidx.cardview.widget.CardView
+        android:visibility="gone"
+        android:id="@+id/tv_hide2_previous"
         android:layout_marginTop="10dp"
         app:cardBackgroundColor="#323232"
         app:cardCornerRadius="10dp"
@@ -205,6 +231,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/main"/>
             <TextView
+                android:id="@+id/tv_hide2_previous_status"
                 android:layout_gravity="center"
                 android:textColor="@color/white"
                 android:fontFamily="@font/main"
@@ -220,6 +247,8 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
+        android:visibility="gone"
+        android:id="@+id/tv_hide1_previous"
         android:layout_marginTop="10dp"
         app:cardBackgroundColor="#323232"
         app:cardCornerRadius="10dp"
@@ -243,6 +272,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/main"/>
             <TextView
+                android:id="@+id/tv_hide1_previous_status"
                 android:layout_gravity="center"
                 android:textColor="@color/white"
                 android:fontFamily="@font/main"
@@ -260,12 +290,16 @@
         </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/fab_help"
-            android:layout_width="wrap_content"
+            android:text="Help"
+            android:textAllCaps="false"
+            android:fontFamily="@font/main"
+            android:textSize="15dp"
+            android:layout_width="110dp"
             android:layout_gravity="end|bottom"
             app:backgroundTint="@color/white"
-            android:src="@drawable/ic_help"
+            app:icon="@drawable/ic_help"
             android:layout_marginBottom="20dp"
             android:layout_marginEnd="10dp"
             android:layout_height="wrap_content"/>

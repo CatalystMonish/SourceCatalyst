@@ -2,6 +2,7 @@ package com.catalystmedia.sourcecatalyst
 
 import android.app.Dialog
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,10 +16,12 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_start_intern.*
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class StartInternActivity : AppCompatActivity() {
-    var startDate = ""
+    var currentDate = ""
     var codeMain = ""
     var selectedTask = ""
     var flip = true
@@ -30,14 +33,17 @@ class StartInternActivity : AppCompatActivity() {
         checkStatus()
         initData()
         showLoadDialog()
+        setDays()
 
-        val sdf = SimpleDateFormat("dd/M")
-        val sdfDate = SimpleDateFormat("dd/M/yyy")
-        val currentDate = sdf.format(Date())
-         startDate = sdfDate.format(Date()).toString()
         btn_start_intern.setOnClickListener {
-            changeData()
+            if(selectedTask!="") {
+                changeData()
+            }
+            else{
+                Toast.makeText(this@StartInternActivity, "Select a task by tapping on it!", Toast.LENGTH_SHORT).show()
+            }
         }
+
         tv_task1.setOnClickListener {
                 selectedTask = tv_task1.text.toString()
                 //change bg
@@ -53,6 +59,18 @@ class StartInternActivity : AppCompatActivity() {
                 flip
             }
 
+    }
+
+    private fun setDays() {
+        val date = Date()
+        var df = SimpleDateFormat("dd/MM/yyyy")
+        val c1 = Calendar.getInstance()
+        currentDate = df.format(date) // get current date here
+        c1.add(Calendar.DAY_OF_YEAR, 30)
+        df = SimpleDateFormat("dd/MM/yyyy")
+        val resultDate = c1.time
+        val dueDate = df.format(resultDate)
+        tv_date_total.text = currentDate + " to " + dueDate
     }
 
 
@@ -76,6 +94,7 @@ class StartInternActivity : AppCompatActivity() {
                 }
 
             })
+
     }
 
 
@@ -159,6 +178,7 @@ class StartInternActivity : AppCompatActivity() {
                     else if(!status){
                         loadDialog.dismiss()
                         start_intern_ll.visibility = View.VISIBLE
+                        cat_lottie.visibility = View.GONE
                         Toast.makeText(this@StartInternActivity, "No On going Tasks Detected: NEW INTERNSHIP", Toast.LENGTH_SHORT).show()
                     }
 
@@ -185,9 +205,9 @@ class StartInternActivity : AppCompatActivity() {
     private fun changeData() {
         val user = FirebaseAuth.getInstance().currentUser?.uid.toString()
         FirebaseDatabase.getInstance().reference.child("Users").child(user).child("ongoingStatus").setValue(true)
-        FirebaseDatabase.getInstance().reference.child("Users").child(user).child("currentStartDate").setValue(startDate)
+        FirebaseDatabase.getInstance().reference.child("Users").child(user).child("currentStartDate").setValue(currentDate)
         FirebaseDatabase.getInstance().reference.child("Users").child(user).child("TASK1").child("taskProblem").setValue(selectedTask)
-        FirebaseDatabase.getInstance().reference.child("Users").child(user).child("TASK1").child("currentStartDate").setValue(startDate).addOnCompleteListener{
+        FirebaseDatabase.getInstance().reference.child("Users").child(user).child("TASK1").child("currentStartDate").setValue(currentDate).addOnCompleteListener{
             Toast.makeText(this@StartInternActivity, "Data Changed", Toast.LENGTH_SHORT).show()
             val intent = Intent(this@StartInternActivity, HomeActivity::class.java)
             startActivity(intent)

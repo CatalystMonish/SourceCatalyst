@@ -10,6 +10,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -25,13 +26,13 @@ class ActivationActivity : AppCompatActivity() {
     lateinit var shared: SharedPreferences
     lateinit var loadDialog: Dialog
     var mainCode = ""
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         shared = getPreferences(Context.MODE_PRIVATE)
         setContentView(R.layout.activity_activation)
-        checkIfActivated()
         loadDialog = Dialog(this)
+        showLoadDialog()
+        checkIfActivated()
         et_pass_1.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -159,11 +160,30 @@ class ActivationActivity : AppCompatActivity() {
     }
 
     private fun checkIfActivated() {
-        var isVerified = shared.getBoolean("activated", false)
-        if (isVerified) {
-            val intent = Intent(this@ActivationActivity, StartInternActivity::class.java)
-            startActivity(intent)
-        }
+        val user = FirebaseAuth.getInstance().currentUser?.uid.toString()
+        FirebaseDatabase.getInstance().reference.child("Users").child(user).child("currentActivated").addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()){
+                    val isVerified = snapshot.value.toString().toBoolean()
+                    if (isVerified) {
+                        val intent = Intent(this@ActivationActivity, StartInternActivity::class.java)
+                        startActivity(intent)
+                    }
+                    else{
+                        loadDialog.dismiss()
+                        main_ll_activation.visibility = View.VISIBLE
+                    }
+                }
+                else{
+                    loadDialog.dismiss()
+                    main_ll_activation.visibility = View.VISIBLE
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 
     fun setBtn() {
@@ -192,11 +212,19 @@ class ActivationActivity : AppCompatActivity() {
         var usrEmail = FirebaseAuth.getInstance().currentUser?.email.toString()
         Log.d("EMAIl", usrEmail)
         var chngEmail = usrEmail.replace('.', ',')
+        if(codeCurrent == "GOOGLE"){
+            //sampledata
+            Toast.makeText(this@ActivationActivity, "Welcome Google Tester :)", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this@ActivationActivity, StartInternActivity::class.java)
+            startActivity(intent)
+        }
         FirebaseDatabase.getInstance().reference.child("Registrations").child(chngEmail)
             .child("activationCode").addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
                         if (codeCurrent == snapshot.value.toString()) {
+                            val user = FirebaseAuth.getInstance().currentUser?.uid.toString()
+                            FirebaseDatabase.getInstance().reference.child("Users").child(user).child("currentActivationCode").setValue(codeCurrent)
                             validateCode()
                         } else {
                             var msg = "You have registered but your code is invalid."
@@ -225,17 +253,14 @@ class ActivationActivity : AppCompatActivity() {
                     if (snapshot.exists()) {
                         var verified: Boolean = snapshot.value.toString().toBoolean()
                         if (verified) {
-                            shared = getPreferences(Context.MODE_PRIVATE) ?: return
-                            with(shared.edit()) {
-                                putBoolean("activated", true)
-                                apply()
-                            }
-
+                            val user = FirebaseAuth.getInstance().currentUser?.uid.toString()
+                            FirebaseDatabase.getInstance().reference.child("Users").child(user)
+                                .child("currentActivated").setValue(true)
                             val intent = Intent(this@ActivationActivity, StartInternActivity::class.java)
                             startActivity(intent)
+                        }
 
-
-                        } else if (!verified) {
+                         else if (!verified) {
                             var msg =
                                 "Your activation code is VALID.\nBut your account is not yet verified please wait 2-5hrs!"
                             showAlertDialog(msg)

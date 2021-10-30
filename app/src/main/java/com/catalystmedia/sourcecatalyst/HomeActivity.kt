@@ -11,6 +11,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.util.Pair
+import android.view.View
 import android.widget.Toast
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.bumptech.glide.Glide
@@ -38,6 +39,8 @@ class HomeActivity : AppCompatActivity() {
     private var todaysDate = ""
     var codeMain = ""
     var whatsappLink = ""
+    var task1Trigger = false
+    var task2Trigger = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +49,8 @@ class HomeActivity : AppCompatActivity() {
         checkDate()
         startAnimationCustom()
         getCode()
+        checkSubmissionStatus("TASK1")
+        checkSubmissionStatus("TASK2")
         //onclickListeners
         btn_guide.setOnClickListener {
             showResourceDialog()
@@ -57,7 +62,7 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent, activityOptions.toBundle())
         }
         btn_settings.setOnClickListener {
-            val intent = Intent(this, UtilitiesActivity::class.java)
+            val intent = Intent(this, EndActivity::class.java)
             startActivity(intent)
             Animatoo.animateSlideRight(this)
         }
@@ -70,6 +75,10 @@ class HomeActivity : AppCompatActivity() {
         home_swipe.setOnRefreshListener {
             initActivity()
             checkDate()
+            startAnimationCustom()
+            getCode()
+            checkSubmissionStatus("TASK1")
+            checkSubmissionStatus("TASK2")
             Handler(Looper.getMainLooper()).postDelayed({
               home_swipe.isRefreshing = false
             }, 1000)
@@ -106,6 +115,87 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
+    private fun checkSubmissionStatus(taskVal:String){
+        val userUID = FirebaseAuth.getInstance().currentUser?.uid.toString()
+        FirebaseDatabase.getInstance().reference.child("Users").child(userUID).child(taskVal).child("submissionStatus").addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    var statusValue = snapshot.value.toString()
+                    if (taskVal == "TASK1") {
+                        tv_hide_previous.visibility = View.VISIBLE
+                        tv_hide1_previous.visibility = View.VISIBLE
+                        tv_hide1_previous_status.text = statusValue
+                        tv_task_no.text = "Task II"
+                        task1Trigger = true
+                        val pass = "TASK2"
+                        setOngoingProblem(pass)
+                        setProperProgress(pass)
+
+                    } else if(taskVal == "TASK2"){
+                        tv_hide_previous.visibility = View.VISIBLE
+                        tv_hide2_previous.visibility = View.VISIBLE
+                        tv_hide2_previous_status.text = statusValue
+                        tv_task_no.text = "Task III"
+                        task2Trigger = true
+                        val pass = "TASK3"
+                        setOngoingProblem(pass)
+                        setProperProgress(pass)
+                    }
+
+                }
+                else if(!task1Trigger && !task2Trigger){
+                    //submission for both 1 and 2 dosent exist
+                    val pass = "TASK1"
+                    tv_task_no.text = "Task I"
+                    setOngoingProblem(pass)
+                    setProperProgress(pass)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+
+    }
+
+    private fun setProperProgress(pass: String) {
+        val userUID = FirebaseAuth.getInstance().currentUser?.uid.toString()
+        FirebaseDatabase.getInstance().reference.child("Users").child(userUID)
+            .child(pass).child("currentStartDate").addListenerForSingleValueEvent(object:ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                 if(snapshot.exists()){
+                     //add 10 days to currentStartDate
+                     var dateInString = snapshot.value.toString()
+                     tv_task_start_date.text = "Start Date - "+ dateInString
+                     Log.d("DATEIWANT", dateInString)
+                     //find days remaining
+                     val nowDate = todaysDate.toString()
+                     val date1: Date
+                     val date2: Date
+                     val dates = SimpleDateFormat("dd/MM/yyyy")
+                     date1 = dates!!.parse(dateInString)
+                     date2 = dates!!.parse(nowDate)
+                     Log.d("start", dateInString)
+                     Log.d("today", nowDate)
+                     val difference: Long = kotlin.math.abs(date1.time - date2.time)
+                     val differenceDates = difference / (24 * 60 * 60 * 1000)
+                     val tvDays = differenceDates
+                     var dayInTen = tvDays.toFloat()
+                     var dayInTenRe = (10 - dayInTen).toInt()
+                     progress_day.progress = dayInTen
+                     tv_days_left.text =  "$dayInTenRe Days Left"
+                 }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+    }
+
     private fun nextCode() {
         val mainCode = codeMain.drop(4)
         var char5 = mainCode.dropLast(1)
@@ -140,89 +230,89 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun taskMonitor(tvDays: Long) {
-        val userUID = FirebaseAuth.getInstance().currentUser?.uid.toString()
-        //get current day (if day> 10 ) change task and save old task data to databse and show previous task view
-
-        //get current day
-        val currentDay = tvDays.toInt()
-        when {
-            currentDay in 10..19 -> {
-                //task 1 should be complete
-                FirebaseDatabase.getInstance().reference.child("Users").child(userUID).child("TASK1").child("status")
-                    .addListenerForSingleValueEvent(object : ValueEventListener{
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            if(snapshot.exists()){
-                                val status = snapshot.value.toString()
-                                if(status == "onGoing"){
-                                    val taskNo = "TASK1"
-                                    completeTask(taskNo)
-                                }
-                                else if (status == "completed"){
-                                    //task already completed do nothing
-                                    Toast.makeText(this@HomeActivity, "Already on Task 2", Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                            else{
-                                    val taskNo = "TASK1"
-                                    completeTask(taskNo)
-                            }
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            TODO("Not yet implemented")
-                        }
-                    })}
-            currentDay in 20..29 -> {
-                //task 2 should be complete
-                FirebaseDatabase.getInstance().reference.child("Users").child(userUID).child("TASK2").child("status")
-                    .addListenerForSingleValueEvent(object : ValueEventListener{
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            if(snapshot.exists()){
-                                val status = snapshot.value.toString()
-                                if(status == "onGoing"){
-                                    val taskNo = "TASK2"
-                                    completeTask(taskNo)
-                                }
-                                else if (status == "completed"){
-                                    //task already completed do nothing
-                                    Toast.makeText(this@HomeActivity, "Already on Task 3", Toast.LENGTH_SHORT).show()
-                                }
-
-                            }
-                            else {
-                                val taskNo = "TASK2"
-                                completeTask(taskNo)
-                            }
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            TODO("Not yet implemented")
-                        }
-                    })}
-            currentDay >= 30 -> {
-
-                //task 3 should be complete
-                //save and delete all task data and complete the internship!!
-                Toast.makeText(this@HomeActivity, "Your Internship Should be complete", Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-
-private fun completeTask(taskNo:String) {
-    val userUID = FirebaseAuth.getInstance().currentUser?.uid.toString()
-   //check what info to save
-    //start date //taskstatus //taskproblemCode //submissionStatus //submissionVerfiedStatus
-    val taskNode:DatabaseReference = FirebaseDatabase.getInstance().reference.child("Users").child(userUID).child(taskNo)
-    val taskMap = HashMap<String, Any>()
-    taskMap["status"] = "completed"
-    taskMap["taskProblemCode"] = "task code goes here"
-    taskNode.updateChildren(taskMap).addOnCompleteListener { task->
-        if(task.isSuccessful){
-            Toast.makeText(this@HomeActivity,"$taskNo completed succesfully!",Toast.LENGTH_SHORT).show()
-        }
-    }
-}
+//    private fun taskMonitor(tvDays: Long) {
+//        val userUID = FirebaseAuth.getInstance().currentUser?.uid.toString()
+//        //get current day (if day> 10 ) change task and save old task data to databse and show previous task view
+//
+//        //get current day
+//        val currentDay = tvDays.toInt()
+//        when {
+//            currentDay in 10..19 -> {
+//                //task 1 should be complete
+//                FirebaseDatabase.getInstance().reference.child("Users").child(userUID).child("TASK1").child("status")
+//                    .addListenerForSingleValueEvent(object : ValueEventListener{
+//                        override fun onDataChange(snapshot: DataSnapshot) {
+//                            if(snapshot.exists()){
+//                                val status = snapshot.value.toString()
+//                                if(status == "onGoing"){
+//                                    val taskNo = "TASK1"
+//                                    completeTask(taskNo)
+//                                }
+//                                else if (status == "completed"){
+//                                    //task already completed do nothing
+//                                    Toast.makeText(this@HomeActivity, "Already on Task 2", Toast.LENGTH_SHORT).show()
+//                                }
+//                            }
+//                            else{
+//                                    val taskNo = "TASK1"
+//                                    completeTask(taskNo)
+//                            }
+//                        }
+//
+//                        override fun onCancelled(error: DatabaseError) {
+//                            TODO("Not yet implemented")
+//                        }
+//                    })}
+//            currentDay in 20..29 -> {
+//                //task 2 should be complete
+//                FirebaseDatabase.getInstance().reference.child("Users").child(userUID).child("TASK2").child("status")
+//                    .addListenerForSingleValueEvent(object : ValueEventListener{
+//                        override fun onDataChange(snapshot: DataSnapshot) {
+//                            if(snapshot.exists()){
+//                                val status = snapshot.value.toString()
+//                                if(status == "onGoing"){
+//                                    val taskNo = "TASK2"
+//                                    completeTask(taskNo)
+//                                }
+//                                else if (status == "completed"){
+//                                    //task already completed do nothing
+//                                    Toast.makeText(this@HomeActivity, "Already on Task 3", Toast.LENGTH_SHORT).show()
+//                                }
+//
+//                            }
+//                            else {
+//                                val taskNo = "TASK2"
+//                                completeTask(taskNo)
+//                            }
+//                        }
+//
+//                        override fun onCancelled(error: DatabaseError) {
+//                            TODO("Not yet implemented")
+//                        }
+//                    })}
+//            currentDay >= 30 -> {
+//
+//                //task 3 should be complete
+//                //save and delete all task data and complete the internship!!
+//                Toast.makeText(this@HomeActivity, "Your Internship Should be complete", Toast.LENGTH_LONG).show()
+//            }
+//        }
+//    }
+//
+//private fun completeTask(taskNo:String) {
+//    val userUID = FirebaseAuth.getInstance().currentUser?.uid.toString()
+//   //check what info to save
+//    //start date //taskstatus //taskproblemCode //submissionStatus //submissionVerfiedStatus
+//    val taskNode:DatabaseReference = FirebaseDatabase.getInstance().reference.child("Users").child(userUID).child(taskNo)
+//    val taskMap = HashMap<String, Any>()
+//    taskMap["status"] = "completed"
+//    taskMap["taskProblemCode"] = "task code goes here"
+//    taskNode.updateChildren(taskMap).addOnCompleteListener { task->
+//        if(task.isSuccessful){
+//            Toast.makeText(this@HomeActivity,"$taskNo completed succesfully!",Toast.LENGTH_SHORT).show()
+//        }
+//    }
+//}
 
     private fun initActivity() {
 
@@ -267,35 +357,40 @@ private fun completeTask(taskNo:String) {
                     val difference: Long = kotlin.math.abs(date1.time - date2.time)
                     val differenceDates = difference / (24 * 60 * 60 * 1000)
                     val tvDays = differenceDates + 1
-                    taskMonitor(tvDays)
+//                    taskMonitor(tvDays)
                     if (tvDays in 1..9) {
-                        tv_task_no.text = "Task I"
+//                        tv_task_no.text = "Task I"
                         tv_top_day.text = "Day 0$tvDays"
-                        var dayInTen = tvDays.toFloat()
-                        progress_day.progress = dayInTen
-                        var dayInTenRe = (10 - dayInTen).toInt()
-                        tv_days_left.text = "$dayInTenRe Days Left"
-                        val pass = "TASK1"
-                        setOngoingProblem(pass)
+//                        var dayInTen = tvDays.toFloat()
+//                        progress_day.progress = dayInTen
+//                        var dayInTenRe = (10 - dayInTen).toInt()
+//                        tv_days_left.text = "$dayInTenRe Days Left"
+//                        val pass = "TASK1"
+//                        setOngoingProblem(pass)
                     } else if (tvDays in 10..19) {
-                        tv_task_no.text = "Task II"
+//                        tv_task_no.text = "Task II"
                         tv_top_day.text = "Day $tvDays"
-                        var dayInTen = (tvDays - 10).toFloat()
-                        var dayInTenRe = (10 - dayInTen).toInt()
-                        progress_day.progress = dayInTen
-                        tv_days_left.text =  "$dayInTenRe Days Left"
-                        val pass = "TASK2"
-                        setOngoingProblem(pass)
+                        tv_hide_previous.visibility = View.VISIBLE
+                        tv_hide1_previous.visibility = View.VISIBLE
+//                        var dayInTen = (tvDays - 10).toFloat()
+//                        var dayInTenRe = (10 - dayInTen).toInt()
+//                        progress_day.progress = dayInTen
+//                        tv_days_left.text =  "$dayInTenRe Days Left"
+//                        val pass = "TASK2"
+//                        setOngoingProblem(pass)
                     }
                     else if (tvDays in 20..30) {
-                        tv_task_no.text = "Task III"
+//                        tv_task_no.text = "Task III"
                         tv_top_day.text = "Day $tvDays"
-                        var dayInTen = (tvDays - 20).toFloat()
-                        progress_day.progress = dayInTen
-                        var dayInTenRe = (10 - dayInTen).toInt()
-                        tv_days_left.text =  "$dayInTenRe Days Left"
-                        val pass = "TASK3"
-                        setOngoingProblem(pass)
+//                        var dayInTen = (tvDays - 20).toFloat()
+                        tv_hide_previous.visibility = View.VISIBLE
+                        tv_hide1_previous.visibility = View.VISIBLE
+                        tv_hide2_previous.visibility = View.VISIBLE
+//                        progress_day.progress = dayInTen
+//                        var dayInTenRe = (10 - dayInTen).toInt()
+//                        tv_days_left.text =  "$dayInTenRe Days Left"
+//                        val pass = "TASK3"
+//                        setOngoingProblem(pass)
                     }
                     else {
                         //day exceeds 30

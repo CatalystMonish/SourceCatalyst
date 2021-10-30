@@ -7,6 +7,12 @@
     android:orientation="vertical"
     android:background="@color/black"
     tools:context=".ActivationActivity">
+    <LinearLayout
+        android:id="@+id/main_ll_activation"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 <TextView
     android:layout_marginTop="50dp"
     android:layout_width="match_parent"
@@ -115,4 +121,5 @@
         android:textColor="@color/white"
         android:fontFamily="@font/main"
         android:background="@drawable/btn_bg_round_green"/>
+</LinearLayout>
 </LinearLayout>
