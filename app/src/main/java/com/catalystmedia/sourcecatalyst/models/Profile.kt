@@ -7,6 +7,7 @@ public class Profile {
     private var completionStatus:String = ""
     private var startDate:String = ""
 
+
     constructor()
     constructor(courseID: String, certificateLink: String, completionStatus: String, startDate: String)
     {

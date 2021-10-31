@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 <LinearLayout
-    android:visibility="gone"
+    android:visibility="visible"
     android:id="@+id/start_intern_ll"
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -110,57 +110,98 @@
         android:textSize="20sp"
         android:layout_marginTop="20dp"
         android:layout_marginStart="30dp"/>
-    <androidx.cardview.widget.CardView
+    <LinearLayout
+        android:background="#202020"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal">
+        <RadioButton
+            android:buttonTint="#1E9350"
+            android:id="@+id/rb_task1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:fontFamily="@font/main"
+            android:id="@+id/tv_title1"
+            android:layout_gravity="center"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="loading"
+            android:textColor="@color/white"/>
+        <ImageView
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="center"
+          android:id="@+id/btn_show1"
+            android:scaleType="center"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_down"
+            app:tint="@color/white" />
+    </LinearLayout>
+    <TextView
+       android:padding="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="#323232"
+        android:visibility="gone"
+        android:id="@+id/tv_more1"
+        android:textSize="16sp"
+        android:fontFamily="@font/main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"/>
+    <LinearLayout
+        android:background="#202020"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        app:cardBackgroundColor="#323232"
-        app:cardCornerRadius="10dp"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/tv_task1_bg"
-            android:visibility="invisible"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/stroke_round"/>
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal">
+        <RadioButton
+            android:buttonTint="#1E9350"
+            android:id="@+id/rb_task2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         <TextView
-            android:id="@+id/tv_task1"
-            android:layout_margin="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:textSize="16sp"
             android:fontFamily="@font/main"
-            android:textColor="@color/white"
-            android:text="Loading.."/>
-
-    </androidx.cardview.widget.CardView>
-    <androidx.cardview.widget.CardView
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        app:cardBackgroundColor="#323232"
-        app:cardCornerRadius="10dp"
-        android:layout_height="wrap_content">
+            android:id="@+id/tv_title2"
+            android:layout_gravity="center"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="loading"
+            android:textColor="@color/white"/>
         <ImageView
-            android:id="@+id/tv_task2_bg"
-            android:visibility="invisible"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/stroke_round"/>
-        <TextView
-            android:id="@+id/tv_task2"
-            android:layout_margin="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:textSize="16sp"
-            android:fontFamily="@font/main"
-            android:textColor="@color/white"
-            android:text="Loading.."/>
-    </androidx.cardview.widget.CardView>
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="center"
+            android:id="@+id/btn_show2"
+            android:scaleType="center"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_down"
+            app:tint="@color/white" />
+    </LinearLayout>
+    <TextView
+        android:padding="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="#323232"
+        android:visibility="gone"
+        android:id="@+id/tv_more2"
+        android:textSize="16sp"
+        android:fontFamily="@font/main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"/>
     <Space
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

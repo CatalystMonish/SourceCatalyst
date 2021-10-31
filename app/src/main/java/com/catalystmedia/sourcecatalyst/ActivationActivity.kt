@@ -26,12 +26,13 @@ class ActivationActivity : AppCompatActivity() {
     lateinit var shared: SharedPreferences
     lateinit var loadDialog: Dialog
     var mainCode = ""
+    var endLoop:Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        shared = getPreferences(Context.MODE_PRIVATE)
         setContentView(R.layout.activity_activation)
         loadDialog = Dialog(this)
         showLoadDialog()
+        endLoop = intent.getBooleanExtra("endLoop",false)
         checkIfActivated()
         et_pass_1.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -159,6 +160,25 @@ class ActivationActivity : AppCompatActivity() {
 
     }
 
+    private fun checkifOld() {
+        val user = FirebaseAuth.getInstance().currentUser?.uid.toString()
+        FirebaseDatabase.getInstance().reference.child("Users").child(user).child("History").addListenerForSingleValueEvent(object: ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+               if(snapshot.exists()){
+                   val intent = Intent(this@ActivationActivity, ProfileActivity::class.java)
+                   intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                   intent.putExtra("isOld", true)
+                   startActivity(intent)
+               }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+    }
+
     private fun checkIfActivated() {
         val user = FirebaseAuth.getInstance().currentUser?.uid.toString()
         FirebaseDatabase.getInstance().reference.child("Users").child(user).child("currentActivated").addListenerForSingleValueEvent(object: ValueEventListener {
@@ -170,11 +190,17 @@ class ActivationActivity : AppCompatActivity() {
                         startActivity(intent)
                     }
                     else{
+                        if(!endLoop){
+                            checkifOld()
+                        }
                         loadDialog.dismiss()
                         main_ll_activation.visibility = View.VISIBLE
                     }
                 }
                 else{
+                    if(!endLoop){
+                        checkifOld()
+                    }
                     loadDialog.dismiss()
                     main_ll_activation.visibility = View.VISIBLE
                 }
@@ -219,7 +245,7 @@ class ActivationActivity : AppCompatActivity() {
             startActivity(intent)
         }
         FirebaseDatabase.getInstance().reference.child("Registrations").child(chngEmail)
-            .child("activationCode").addValueEventListener(object : ValueEventListener {
+            .child("activationCode").addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
                         if (codeCurrent == snapshot.value.toString()) {
@@ -248,7 +274,7 @@ class ActivationActivity : AppCompatActivity() {
         var usrEmail = FirebaseAuth.getInstance().currentUser?.email.toString()
         var chngEmail = usrEmail.replace('.', ',')
         FirebaseDatabase.getInstance().reference.child("Registrations").child(chngEmail)
-            .child("verified").addValueEventListener(object : ValueEventListener {
+            .child("verified").addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
                         var verified: Boolean = snapshot.value.toString().toBoolean()

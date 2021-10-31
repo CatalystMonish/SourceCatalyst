@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -14,6 +15,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.android.synthetic.main.activity_start_intern.*
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -25,6 +27,10 @@ class StartInternActivity : AppCompatActivity() {
     var codeMain = ""
     var selectedTask = ""
     var flip = true
+    var flipAccord = true
+    var flipAccord1 = true
+    var globalTask1 = ""
+    var globalTask2 = ""
     lateinit var loadDialog: Dialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +40,51 @@ class StartInternActivity : AppCompatActivity() {
         initData()
         showLoadDialog()
         setDays()
+        btn_show1.setOnClickListener {
+            if (flipAccord) {
+                val height = tv_more1.getHeight().toFloat()
+                tv_more1.visibility = View.VISIBLE
+                btn_show1.setImageResource(R.drawable.ic_up)
+                tv_more1.setAlpha(0.0f);
+                tv_more1.animate()
+                    .translationY(0F)
+                    .alpha(1.0f)
+                    .setListener(null);
+                flipAccord =false
+            }
+            else if (!flipAccord){
+                btn_show1.setImageResource(R.drawable.ic_down)
+                tv_more1.animate()
+                    .translationY(0F)
+                    .alpha(0.0f)
+                    .withEndAction {
+                        tv_more1.visibility = View.GONE
+                    }
+                flipAccord =true
+            }
+        }
+        btn_show2.setOnClickListener {
+            if (flipAccord1) {
+                tv_more2.visibility = View.VISIBLE
+                btn_show2.setImageResource(R.drawable.ic_up)
+                tv_more2.setAlpha(0.0f);
+                tv_more2.animate()
+                    .translationY(0F)
+                    .alpha(1.0f)
+                    .setListener(null);
+                flipAccord1 =false
+            }
+            else if (!flipAccord1){
+                btn_show2.setImageResource(R.drawable.ic_down)
+                tv_more2.animate()
+                    .translationY(0F)
+                    .alpha(0.0f)
+                    .withEndAction {
+                        tv_more2.visibility = View.GONE
+                    }
+                flipAccord1 =true
+            }
+        }
 
         btn_start_intern.setOnClickListener {
             if(selectedTask!="") {
@@ -44,18 +95,16 @@ class StartInternActivity : AppCompatActivity() {
             }
         }
 
-        tv_task1.setOnClickListener {
-                selectedTask = tv_task1.text.toString()
+        rb_task1.setOnClickListener {
+                selectedTask = globalTask1
                 //change bg
-                tv_task1_bg.visibility = View.VISIBLE
-                tv_task2_bg.visibility = View.INVISIBLE
+            rb_task2.isChecked = false
                 !flip
         }
-        tv_task2.setOnClickListener {
-                selectedTask = tv_task2.text.toString()
+        rb_task2.setOnClickListener {
+                selectedTask = globalTask2
                 //change bg
-                tv_task1_bg.visibility = View.INVISIBLE
-                tv_task2_bg.visibility = View.VISIBLE
+            rb_task1.isChecked = false
                 flip
             }
 
@@ -136,7 +185,10 @@ class StartInternActivity : AppCompatActivity() {
              .child(nodeCode).child("task1").child("1").addListenerForSingleValueEvent(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                if(snapshot.exists()){
-                   tv_task1.text = snapshot.value.toString()
+                   globalTask1 = snapshot.value.toString()
+                   val taskArray = snapshot.value.toString().split(":")
+                   tv_title1.text = taskArray[0]
+                   tv_more1.text = taskArray[1]
                }
             }
 
@@ -149,7 +201,10 @@ class StartInternActivity : AppCompatActivity() {
             .child(nodeCode).child("task1").child("2").addListenerForSingleValueEvent(object: ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if(snapshot.exists()) {
-                        tv_task2.text = snapshot.value.toString()
+                        globalTask2 = snapshot.value.toString()
+                        val taskArray = snapshot.value.toString().split(":")
+                        tv_title2.text = taskArray[0]
+                        tv_more2.text = taskArray[1]
                     }
                 }
 
@@ -173,6 +228,7 @@ class StartInternActivity : AppCompatActivity() {
                     if(status){
                         loadDialog.dismiss()
                         val intent = Intent(this@StartInternActivity, HomeActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
                     }
                     else if(!status){
@@ -210,6 +266,7 @@ class StartInternActivity : AppCompatActivity() {
         FirebaseDatabase.getInstance().reference.child("Users").child(user).child("TASK1").child("currentStartDate").setValue(currentDate).addOnCompleteListener{
             Toast.makeText(this@StartInternActivity, "Data Changed", Toast.LENGTH_SHORT).show()
             val intent = Intent(this@StartInternActivity, HomeActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         }
         loadDialog.dismiss()

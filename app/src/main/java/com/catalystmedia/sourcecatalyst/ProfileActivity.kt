@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.util.Pair
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,11 +34,24 @@ class ProfileActivity : AppCompatActivity() {
     private var itemList: MutableList<Profile>? = null
     private var firebaseUser: FirebaseUser? = null
     var codeMain = ""
+    private var isOld:Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
         firebaseUser = FirebaseAuth.getInstance().currentUser
+        isOld = intent.getBooleanExtra("isOld",false)
+        if(isOld){
+            btn_new_internship.visibility = View.VISIBLE
+            cv_ongoing.visibility = View.GONE
+            iv_back_profile.visibility = View.GONE
+            btn_new_internship.setOnClickListener {
+                val intent = Intent(this@ProfileActivity, ActivationActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.putExtra("endLoop", true)
+                startActivity(intent)
+            }
+        }
         var recyclerView: RecyclerView? = null
         recyclerView = findViewById(R.id.layout_profile_recycler)
         val linearLayoutManager = LinearLayoutManager(this)
@@ -97,7 +111,7 @@ class ProfileActivity : AppCompatActivity() {
         val historyRef = FirebaseDatabase.getInstance().reference.child("Users")
             .child(firebaseUser!!.uid.toString())
             .child("History")
-        historyRef.addValueEventListener(object : ValueEventListener {
+        historyRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     itemList!!.clear()

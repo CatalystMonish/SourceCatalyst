@@ -12,6 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SourceCatalyst">
         <activity
+            android:name=".EndedActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DocumentsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DiagnosticsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SelectTaskActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WebViewActivity"
+            android:exported="false" />
+        <activity
             android:name=".EndActivity"
             android:exported="false" />
         <activity

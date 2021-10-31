@@ -1,10 +1,15 @@
 package com.catalystmedia.sourcecatalyst
 
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -41,6 +46,9 @@ class SubmissionActivity : AppCompatActivity() {
         tv_text_github.setOnClickListener {
 
         }
+        iv_back_submission.setOnClickListener {
+            finish()
+        }
     }
     private fun checkDate(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -54,7 +62,10 @@ class SubmissionActivity : AppCompatActivity() {
         }
 
     }
-
+    fun View.hideKeyboard() {
+        val inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(windowToken, 0)
+    }
     private fun makeSubmission(){
         if(triggeredRate) {
             var taskNoUpper = ""
@@ -76,14 +87,25 @@ class SubmissionActivity : AppCompatActivity() {
             taskMap["submissionStatus"] = "submitted"
             taskMap["submissionDate"] = todaysDate
             taskMap["rating"] = ratingGiven
+            taskMap["link"]= et_github_link.text.toString()
             taskNode.updateChildren(taskMap).addOnCompleteListener { task->
                 if(task.isSuccessful){
+                    Utils.hideSoftKeyBoard(this@SubmissionActivity, btn_create_submission )
                     //move to nextTask
                     Toast.makeText(this@SubmissionActivity,"Task Submission Done Successfully!",Toast.LENGTH_SHORT).show()
                     //showerConfetti
                     lottie_celb.visibility = View.VISIBLE
                     lottie_celb.playAnimation()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        val intent = Intent(this@SubmissionActivity, HomeActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent);
+                    }, 2000)
+
                 }
+            }
+            if(taskNoUpper == "TASK3"){
+                completeInternShip()
             }
         }
 
@@ -97,5 +119,11 @@ class SubmissionActivity : AppCompatActivity() {
         //make home previous tasks visible and show status as pending
 
 
+    }
+
+    private fun completeInternShip() {
+        //data parceler
+        //collect internship entries
+        Toast.makeText(this@SubmissionActivity, "Data Parceled and Uploaded", Toast.LENGTH_LONG).show()
     }
 }

@@ -32,13 +32,13 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
     <androidx.cardview.widget.CardView
-        android:layout_marginTop="10dp"
+        android:id="@+id/cv_certificate"
+        android:layout_marginTop="20dp"
         app:cardCornerRadius="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-
-        android:layout_marginEnd="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         app:cardBackgroundColor="#474747">
 
                 <TextView
@@ -47,18 +47,21 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
                     android:textSize="18sp"
+                    android:drawablePadding="10dp"
+                    android:drawableLeft="@drawable/ic_profile_line"
+                    android:drawableTint="@color/white"
                     android:text="Verifiy Certificate"
                     android:fontFamily="@font/main"/>
 
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
-        android:layout_marginTop="10dp"
+        android:id="@+id/cv_help_tools"
+        android:layout_marginTop="15dp"
         app:cardCornerRadius="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-
-        android:layout_marginEnd="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         app:cardBackgroundColor="#474747">
 
         <TextView
@@ -67,8 +70,61 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="18sp"
+            android:drawablePadding="10dp"
+            android:drawableLeft="@drawable/ic_user_voice_line"
+            android:drawableTint="@color/white"
             android:text="Find Help"
             android:fontFamily="@font/main"/>
 
     </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_diagnostics"
+        android:layout_marginTop="15dp"
+        app:cardCornerRadius="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:cardBackgroundColor="#474747">
+
+        <TextView
+            android:padding="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:text="Diagnostics"
+            android:drawablePadding="10dp"
+            android:drawableLeft="@drawable/ic_pulse"
+            android:drawableTint="@color/white"
+            android:fontFamily="@font/main"/>
+
+    </androidx.cardview.widget.CardView>
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/cv_logout"
+        android:background="@drawable/logout_bar"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        app:cardBackgroundColor="@color/text_grey"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textAlignment="center"
+            android:padding="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:text="Logout"
+            android:drawablePadding="10dp"
+            android:drawableLeft="@drawable/ic_logout"
+            android:drawableTint="@color/white"
+            android:fontFamily="@font/main"/>
+
+    </LinearLayout>
 </LinearLayout>

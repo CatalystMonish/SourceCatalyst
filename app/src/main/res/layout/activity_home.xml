@@ -88,7 +88,7 @@
         android:text="Task 00"
         android:textColor="@color/white"
         android:textSize="18sp"
-        android:background="@drawable/btn_bg_round_yellow"
+        android:background="@drawable/btn_bg_round_green"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:fontFamily="@font/main"/>
@@ -136,25 +136,48 @@
         android:layout_marginTop="30dp"
         android:textColor="@color/white"
         android:text="Problem Statement"/>
-    <androidx.cardview.widget.CardView
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        app:cardBackgroundColor="#323232"
-        app:cardCornerRadius="10dp"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/tv_current_problem"
-            android:layout_margin="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:textSize="16sp"
-            android:fontFamily="@font/main"
-            android:textColor="@color/white"
-            android:text="loading your task...\n\n\n\n\n\n"/>
-    </androidx.cardview.widget.CardView>
+            <LinearLayout
+                android:background="#202020"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_marginStart="5dp"
+                    android:fontFamily="@font/main"
+                    android:id="@+id/tv_title_home"
+                    android:layout_gravity="center"
+                    android:textSize="18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="loading"
+                    android:textColor="@color/white"/>
+                <ImageView
+                    android:layout_marginEnd="10dp"
+                    android:layout_gravity="center"
+                    android:id="@+id/btn_show_home"
+                    android:scaleType="center"
+                    android:layout_width="30dp"
+                    android:src="@drawable/ic_up"
+                    android:layout_height="30dp"
+                    app:tint="@color/white" />
+            </LinearLayout>
+            <TextView
+                android:padding="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="#323232"
+                android:visibility="visible"
+                android:id="@+id/tv_more_home"
+                android:textSize="16sp"
+                android:fontFamily="@font/main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"/>
             <LinearLayout
                 android:layout_marginTop="10dp"
                 android:layout_gravity="end"
@@ -165,7 +188,7 @@
         android:id="@+id/btn_guide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Details"
+        android:text="Document PDF"
         android:background="@drawable/btn_bg_round_blue"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
@@ -240,7 +263,7 @@
                 android:paddingEnd="10dp"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
-                android:background="@drawable/btn_bg_round_green"
+                android:background="@drawable/btn_bg_round_yellow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="verified"/>

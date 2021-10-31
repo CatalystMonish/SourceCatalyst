@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_marginStart="30dp"
-    android:layout_marginEnd="30dp"
     android:layout_height="wrap_content"
     android:background="@drawable/dialog_bg"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
     android:orientation="vertical">
    <LinearLayout
-       android:layout_margin="10dp"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:orientation="vertical">
        <TextView
+           android:textAlignment="center"
            android:id="@+id/tv_info_text"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
@@ -24,29 +22,40 @@ purchase the course!"
            android:fontFamily="@font/main"
            android:textSize="17sp"/>
        <LinearLayout
-           android:layout_marginStart="17dp"
-           android:layout_marginEnd="17dp"
+           android:gravity="center"
+           android:layout_marginStart="25sp"
+           android:layout_marginEnd="25sp"
            android:layout_marginTop="20dp"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:orientation="horizontal">
            <androidx.appcompat.widget.AppCompatButton
+               android:layout_weight="1"
                android:id="@+id/btn_info"
-               android:layout_width="120dp"
-               android:layout_height="50dp"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
                android:text="What's this?"
+               android:textSize="15sp"
+               android:paddingStart="10sp"
+               android:paddingEnd="10sp"
+               android:textAllCaps="false"
                android:background="@drawable/btn_bg_round_grey"
                android:textColor="@color/white"
                android:fontFamily="@font/main"/>
            <Space
                android:layout_width="wrap_content"
+               android:layout_weight="0.5"
                android:layout_height="wrap_content"
-               android:layout_weight="1"
                />
            <androidx.appcompat.widget.AppCompatButton
                android:id="@+id/btn_continue"
-               android:layout_width="120dp"
-               android:layout_height="50dp"
+               android:layout_weight="1"
+               android:textSize="15sp"
+               android:paddingStart="10sp"
+               android:paddingEnd="10sp"
+               android:textAllCaps="false"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
                android:text="Continue"
                android:background="@drawable/btn_bg_round_blue"
                android:textColor="@color/white"

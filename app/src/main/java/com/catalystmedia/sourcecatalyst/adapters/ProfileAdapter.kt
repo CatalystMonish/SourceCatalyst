@@ -12,6 +12,7 @@ import com.catalystmedia.sourcecatalyst.R
 import com.catalystmedia.sourcecatalyst.models.Profile
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.android.synthetic.main.activity_profile.*
 
 class ProfileAdapter(private var mContext: Context, private var mList: ArrayList<Profile>):
     RecyclerView.Adapter<ProfileAdapter.ViewHolder>() {
@@ -30,10 +31,29 @@ class ProfileAdapter(private var mContext: Context, private var mList: ArrayList
 
     override fun onBindViewHolder(holder: ProfileAdapter.ViewHolder, position: Int) {
         val item = mList[position]
-        holder.courseTitle.text = item!!.getCourseId()
         holder.status.text = item!!.getCompletionStatus()
-        holder.certificateLink.text = item!!.getCertificateLink()
+//        if(holder.status.text == "completed"){
+//            holder.status.text.setC
+//        }
+        holder.startDate.text = item!!.getStartDate()
+        var codeMain = item!!.getCourseId()
+        var char5 = codeMain.dropLast(1)
+        var char6 = codeMain.drop(1)
+        if (char5 == "A") {
+            holder.courseImg.setImageResource(R.drawable.ic_android_4)
+            holder.courseTitle.text = "Android Development"
+        } else if (char5 == "P") {
+            holder.courseImg.setImageResource(R.drawable.ic_python)
+            holder.courseTitle.text = "Python Development"
+        }
+        if (char6 == "B") {
+            holder.courseLevel.text = "Basic Level"
+        } else if (char6 == "A") {
+            holder.courseLevel.text = "Advanced Level"
+        }
     }
+
+
 
     override fun getItemCount(): Int {
         return mList.size
@@ -45,6 +65,7 @@ class ProfileAdapter(private var mContext: Context, private var mList: ArrayList
         var courseLevel: TextView = itemView.findViewById(R.id.re_tv_level)
         var certificateLink: TextView = itemView.findViewById(R.id.re_tv_link)
         var status: TextView = itemView.findViewById(R.id.re_tv_status)
+        var startDate: TextView = itemView.findViewById(R.id.re_tv_certificate)
 
     }
 

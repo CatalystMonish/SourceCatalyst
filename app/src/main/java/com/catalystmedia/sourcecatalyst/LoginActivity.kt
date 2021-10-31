@@ -2,6 +2,7 @@ package com.catalystmedia.sourcecatalyst
 
 import android.app.Dialog
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -46,6 +47,14 @@ class LoginActivity : AppCompatActivity() {
 //            signIn()
             showAlertDialog()
         }
+        btn_register_now.setOnClickListener {
+            var webpage = Uri.parse("https://thesourcecatalyst.in/registration")
+            val intent = Intent(Intent.ACTION_VIEW, webpage)
+            startActivity(intent)
+//            val intent = Intent(this, WebViewActivity::class.java)
+//            intent.putExtra("url","https://thesourcecatalyst.in/registration")
+//            startActivity(intent)
+        }
     }
     //function sign in google
     private fun signIn() {
@@ -84,11 +93,11 @@ class LoginActivity : AppCompatActivity() {
             val exception = task.exception
             if(task.isSuccessful){
                 try {
-                    loadDialog.dismiss()
                     // Google Sign In was successful, authenticate with Firebase
                     val account = task.getResult(ApiException::class.java)!!
                     Log.d("SignInActivity","firebaseAuthWithGoogle:" + account.id)
                     firebaseAuthWithGoogle(account.idToken!!)
+
                 } catch (e: ApiException) {
                     // Google Sign In failed, update UI appropriately
                     Log.w("SignInActivity","Google sign in failed", e)
@@ -105,7 +114,6 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     checkUserMap()
                 } else {
-                    loadDialog.dismiss()
                     // If sign in fails, display a message to the user.
                     Log.w("SignInActivity", "signInWithCredential:failure", task.exception)
                 }
@@ -127,17 +135,15 @@ class LoginActivity : AppCompatActivity() {
 
                     //if user exists no hashmap already created
                     if (snapshot.exists()) {
-                        loadDialog.dismiss()
                         Toast.makeText(this@LoginActivity, "Welcome Back!", Toast.LENGTH_SHORT).show()
                         //TODO: Change to IntroductionActivity
                         val intent = Intent(this@LoginActivity, ActivationActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
-                        finish()
                     }
 
                     //First time sign in create hash map
                     else {
-                        loadDialog.dismiss()
                         val usersRef: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Users")
                         val userMap = HashMap<String, Any>()
                         userMap["fullname"] = name.toString().toLowerCase()

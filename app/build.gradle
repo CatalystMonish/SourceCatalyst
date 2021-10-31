@@ -60,4 +60,5 @@ dependencies {
     implementation 'com.suddenh4x.ratingdialog:awesome-app-rating:2.4.0'
     implementation 'com.github.ome450901:SimpleRatingBar:1.5.1'
     implementation 'com.github.MasayukiSuda:EasingInterpolator:v1.3.2'
+
 }

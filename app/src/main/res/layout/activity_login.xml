@@ -16,12 +16,27 @@
         android:fontFamily="@font/main"
         android:layout_marginTop="50dp"
         android:text="It's not just an internship,\nit's an experience."/>
-
-    <org.imaginativeworld.whynotimagecarousel.ImageCarousel
-        android:id="@+id/carousel"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+<com.airbnb.lottie.LottieAnimationView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    app:lottie_rawRes="@raw/ic_job"
+    app:lottie_autoPlay="true"
+    app:lottie_loop="true"
+    android:scaleType="fitCenter"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:visibility="gone"
+        android:id="@+id/btn_register_now"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="Register Now"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/main"
+        android:layout_gravity="center"
+        android:textAllCaps="false"
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        android:background="@drawable/stroke_round_btn"/>
     <androidx.cardview.widget.CardView
         android:id="@+id/btn_google"
         android:layout_width="wrap_content"
@@ -63,5 +78,5 @@
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="20dp"
-        android:text="Privacy Policy Here"/>
+        android:text="Privacy Policy"/>
 </LinearLayout>

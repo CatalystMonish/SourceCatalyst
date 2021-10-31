@@ -11,21 +11,31 @@ import android.view.animation.AnimationUtils
 import kotlinx.android.synthetic.main.activity_splash.*
 
 import android.net.ConnectivityManager
+import android.os.Build
+import android.view.View
+import android.view.Window
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import java.lang.Exception
+import android.view.WindowManager
+
+
+
 
 
 class SplashActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_splash)
-            iv_splash.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate))
+        setStatusBarTransparent()
+        iv_splash.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate))
        if(isOnline()!!){
-           Toast.makeText(this, "Connection Successful", Toast.LENGTH_SHORT).show()
+//           Toast.makeText(this, "Connection Successful", Toast.LENGTH_SHORT).show()
            Handler(Looper.getMainLooper()).postDelayed({
                val intent = Intent(this, LoginActivity::class.java)
-               startActivity(intent)
-               finish()
+               intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+               startActivity(intent);
            }, 2000)
        }
         else{
@@ -33,6 +43,20 @@ class SplashActivity : AppCompatActivity() {
            tv_splash_bottom.setTextColor(Color.parseColor("#c40000"))
         }
         }
+    private fun setStatusBarTransparent() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val window: Window = window
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            val decorView: View = window.getDecorView()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
+            } else {
+                decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+            }
+            window.setStatusBarColor(Color.TRANSPARENT)
+        }
+    }
 
     fun isOnline(): Boolean? {
         try {
