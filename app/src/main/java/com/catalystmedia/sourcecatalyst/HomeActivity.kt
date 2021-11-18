@@ -54,7 +54,10 @@ class HomeActivity : AppCompatActivity() {
         checkSubmissionStatus("TASK3")
         //onclickListeners
         btn_guide.setOnClickListener {
-            showResourceDialog()
+//            showResourceDialog()
+            //TODO: Launch Doc Activity
+            val intent = Intent(this@HomeActivity, AllDocsActivity::class.java)
+            startActivity(intent)
         }
         iv_profile.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
@@ -85,8 +88,9 @@ class HomeActivity : AppCompatActivity() {
               home_swipe.isRefreshing = false
             }, 1000)
         }
-        btn_show_home.setOnClickListener {
+        btn_show_home_ll.setOnClickListener {
             if (flipAccord) {
+                btn_show_home_ll.setBackgroundResource(R.drawable.accordian_bg_top_round)
                 tv_more_home.visibility = View.VISIBLE
                 btn_show_home.setImageResource(R.drawable.ic_up)
                 tv_more_home.setAlpha(0.0f);
@@ -97,6 +101,7 @@ class HomeActivity : AppCompatActivity() {
                 flipAccord =false
             }
             else if (!flipAccord){
+                btn_show_home_ll.setBackgroundResource(R.drawable.accordian_bg)
                 btn_show_home.setImageResource(R.drawable.ic_down)
                 tv_more_home.animate()
                     .translationY(0F)

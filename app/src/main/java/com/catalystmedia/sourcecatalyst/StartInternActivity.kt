@@ -40,10 +40,11 @@ class StartInternActivity : AppCompatActivity() {
         initData()
         showLoadDialog()
         setDays()
-        btn_show1.setOnClickListener {
+        btn_show1_ll.setOnClickListener {
             if (flipAccord) {
                 val height = tv_more1.getHeight().toFloat()
                 tv_more1.visibility = View.VISIBLE
+                btn_show1_ll.setBackgroundResource(R.drawable.accordian_bg_top_round)
                 btn_show1.setImageResource(R.drawable.ic_up)
                 tv_more1.setAlpha(0.0f);
                 tv_more1.animate()
@@ -54,6 +55,7 @@ class StartInternActivity : AppCompatActivity() {
             }
             else if (!flipAccord){
                 btn_show1.setImageResource(R.drawable.ic_down)
+                btn_show1_ll.setBackgroundResource(R.drawable.accordian_bg)
                 tv_more1.animate()
                     .translationY(0F)
                     .alpha(0.0f)
@@ -63,10 +65,11 @@ class StartInternActivity : AppCompatActivity() {
                 flipAccord =true
             }
         }
-        btn_show2.setOnClickListener {
+        btn_show2_ll.setOnClickListener {
             if (flipAccord1) {
                 tv_more2.visibility = View.VISIBLE
                 btn_show2.setImageResource(R.drawable.ic_up)
+                btn_show2_ll.setBackgroundResource(R.drawable.accordian_bg_top_round)
                 tv_more2.setAlpha(0.0f);
                 tv_more2.animate()
                     .translationY(0F)
@@ -76,6 +79,7 @@ class StartInternActivity : AppCompatActivity() {
             }
             else if (!flipAccord1){
                 btn_show2.setImageResource(R.drawable.ic_down)
+                btn_show2_ll.setBackgroundResource(R.drawable.accordian_bg)
                 tv_more2.animate()
                     .translationY(0F)
                     .alpha(0.0f)
@@ -139,7 +143,6 @@ class StartInternActivity : AppCompatActivity() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
                 }
 
             })
@@ -161,6 +164,10 @@ class StartInternActivity : AppCompatActivity() {
         else if(char5 == "P" ){
             iv_intern_start.setImageResource(R.drawable.ic_python)
             tv_intern_title.text = "Python Development"
+        }
+        else if(char5 == "W" ){
+            iv_intern_start.setImageResource(R.drawable.ic_web)
+            tv_intern_title.text = "Web Development"
         }
         if(char6 == "B"){
             tv_intern_level.text = "Basic Level"

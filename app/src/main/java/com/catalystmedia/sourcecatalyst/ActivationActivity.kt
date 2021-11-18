@@ -4,12 +4,15 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -34,129 +37,195 @@ class ActivationActivity : AppCompatActivity() {
         showLoadDialog()
         endLoop = intent.getBooleanExtra("endLoop",false)
         checkIfActivated()
-        et_pass_1.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        btn_verify.visibility = View.VISIBLE
+
+        et_pass_1.addTextChangedListener(GenericTextWatcher(et_pass_1,et_pass_2))
+        et_pass_2.addTextChangedListener(GenericTextWatcher(et_pass_2, et_pass_3))
+        et_pass_3.addTextChangedListener(GenericTextWatcher(et_pass_3, et_pass_4))
+        et_pass_4.addTextChangedListener(GenericTextWatcher(et_pass_4, et_pass_5))
+        et_pass_5.addTextChangedListener(GenericTextWatcher(et_pass_5, et_pass_6))
+        et_pass_6.addTextChangedListener(GenericTextWatcher(et_pass_6, null))
+
+
+        et_pass_1.setOnKeyListener(GenericKeyEvent(et_pass_1, null))
+        et_pass_2.setOnKeyListener(GenericKeyEvent(et_pass_2, et_pass_1))
+        et_pass_3.setOnKeyListener(GenericKeyEvent(et_pass_3, et_pass_2))
+        et_pass_4.setOnKeyListener(GenericKeyEvent(et_pass_4,et_pass_3))
+        et_pass_5.setOnKeyListener(GenericKeyEvent(et_pass_5,et_pass_4))
+        et_pass_6.setOnKeyListener(GenericKeyEvent(et_pass_6,et_pass_5))
+
+        btn_verify.setOnClickListener {
+            verifyCode()
+        }
+        //old logic
+//        et_pass_1.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//            }
+//
+//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//                if (et_pass_1.text.isNotEmpty()) {
+//                    et_pass_1.clearFocus()
+//                    et_pass_2.requestFocus()
+//                    et_pass_2.isCursorVisible = true
+//
+//                }
+//            }
+//
+//            override fun afterTextChanged(p0: Editable?) {
+//
+//            }
+//        })
+//        et_pass_2.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//            }
+//
+//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//                if (et_pass_2.text.isNotEmpty()) {
+//                    et_pass_2.clearFocus()
+//                    et_pass_3.requestFocus()
+//                    et_pass_3.isCursorVisible = true
+//
+//                }
+//            }
+//
+//            override fun afterTextChanged(p0: Editable?) {
+//                if (et_pass_2.text.isEmpty()) {
+//                    et_pass_2.clearFocus()
+//                    et_pass_1.requestFocus()
+//                    et_pass_1.isCursorVisible = true
+//                }
+//            }
+//        })
+//        et_pass_3.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//            }
+//
+//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//                if (et_pass_3.text.isNotEmpty()) {
+//                    et_pass_3.clearFocus()
+//                    et_pass_4.requestFocus()
+//                    et_pass_4.isCursorVisible = true
+//
+//                }
+//            }
+//
+//            override fun afterTextChanged(p0: Editable?) {
+//                if (et_pass_3.text.isEmpty()) {
+//                    et_pass_3.clearFocus()
+//                    et_pass_2.requestFocus()
+//                    et_pass_2.isCursorVisible = true
+//                }
+//            }
+//        })
+//        et_pass_4.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//            }
+//
+//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//                if (et_pass_4.text.isNotEmpty()) {
+//                    et_pass_4.clearFocus()
+//                    et_pass_5.requestFocus()
+//                    et_pass_5.isCursorVisible = true
+//
+//                }
+//            }
+//
+//            override fun afterTextChanged(p0: Editable?) {
+//                if (et_pass_4.text.isEmpty()) {
+//                    et_pass_4.clearFocus()
+//                    et_pass_3.requestFocus()
+//                    et_pass_3.isCursorVisible = true
+//                }
+//            }
+//        })
+//        et_pass_5.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//            }
+//
+//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//                if (et_pass_5.text.isNotEmpty()) {
+//                    et_pass_5.clearFocus()
+//                    et_pass_6.requestFocus()
+//                    et_pass_6.isCursorVisible = true
+//
+//                }
+//            }
+//
+//            override fun afterTextChanged(p0: Editable?) {
+//                if (et_pass_5.text.isEmpty()) {
+//                    et_pass_5.clearFocus()
+//                    et_pass_4.requestFocus()
+//                    et_pass_4.isCursorVisible = true
+//                }
+//            }
+//        })
+//        et_pass_6.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//            }
+//
+//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//                if (et_pass_6.text.isNotEmpty()) {
+//                    flip = true
+//                    setBtn()
+//                }
+//            }
+//
+//            override fun afterTextChanged(p0: Editable?) {
+//                if (et_pass_6.text.isEmpty()) {
+//                    et_pass_6.clearFocus()
+//                    et_pass_5.requestFocus()
+//                    et_pass_5.isCursorVisible = true
+//                    flip = false
+//                    setBtn()
+//
+//                }
+//            }
+//        })
+
+    }
+
+    class GenericKeyEvent internal constructor(private val currentView: EditText, private val previousView: EditText?) : View.OnKeyListener{
+        override fun onKey(p0: View?, keyCode: Int, event: KeyEvent?): Boolean {
+            if(event!!.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL && currentView.id != R.id.et_pass_1 && currentView.text.isEmpty()) {
+                //If current is empty then previous EditText's number will also be deleted
+                previousView!!.text = null
+                previousView.requestFocus()
+                return true
             }
+            return false
+        }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (et_pass_1.text.isNotEmpty()) {
-                    et_pass_1.clearFocus()
-                    et_pass_2.requestFocus()
-                    et_pass_2.isCursorVisible = true
 
-                }
+    }
+
+    class GenericTextWatcher internal constructor(private val currentView: View, private val nextView: View?) : TextWatcher {
+        override fun afterTextChanged(editable: Editable) { // TODO Auto-generated method stub
+            val text = editable.toString()
+            when (currentView.id) {
+                R.id.et_pass_1 -> if (text.length == 1) nextView!!.requestFocus()
+                R.id.et_pass_2 -> if (text.length == 1) nextView!!.requestFocus()
+                R.id.et_pass_3 -> if (text.length == 1) nextView!!.requestFocus()
+                R.id.et_pass_4 -> if (text.length == 1) nextView!!.requestFocus()
+                R.id.et_pass_5 -> if (text.length == 1) nextView!!.requestFocus()
+                //You can use EditText4 same as above to hide the keyboard
             }
+        }
 
-            override fun afterTextChanged(p0: Editable?) {
+        override fun beforeTextChanged(
+            arg0: CharSequence,
+            arg1: Int,
+            arg2: Int,
+            arg3: Int
+        ) { // TODO Auto-generated method stub
+        }
 
-            }
-        })
-        et_pass_2.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (et_pass_2.text.isNotEmpty()) {
-                    et_pass_2.clearFocus()
-                    et_pass_3.requestFocus()
-                    et_pass_3.isCursorVisible = true
-
-                }
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                if (et_pass_2.text.isEmpty()) {
-                    et_pass_2.clearFocus()
-                    et_pass_1.requestFocus()
-                    et_pass_1.isCursorVisible = true
-                }
-            }
-        })
-        et_pass_3.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (et_pass_3.text.isNotEmpty()) {
-                    et_pass_3.clearFocus()
-                    et_pass_4.requestFocus()
-                    et_pass_4.isCursorVisible = true
-
-                }
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                if (et_pass_3.text.isEmpty()) {
-                    et_pass_3.clearFocus()
-                    et_pass_2.requestFocus()
-                    et_pass_2.isCursorVisible = true
-                }
-            }
-        })
-        et_pass_4.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (et_pass_4.text.isNotEmpty()) {
-                    et_pass_4.clearFocus()
-                    et_pass_5.requestFocus()
-                    et_pass_5.isCursorVisible = true
-
-                }
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                if (et_pass_4.text.isEmpty()) {
-                    et_pass_4.clearFocus()
-                    et_pass_3.requestFocus()
-                    et_pass_3.isCursorVisible = true
-                }
-            }
-        })
-        et_pass_5.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (et_pass_5.text.isNotEmpty()) {
-                    et_pass_5.clearFocus()
-                    et_pass_6.requestFocus()
-                    et_pass_6.isCursorVisible = true
-
-                }
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                if (et_pass_5.text.isEmpty()) {
-                    et_pass_5.clearFocus()
-                    et_pass_4.requestFocus()
-                    et_pass_4.isCursorVisible = true
-                }
-            }
-        })
-        et_pass_6.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (et_pass_6.text.isNotEmpty()) {
-                    flip = true
-                    setBtn()
-                }
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                if (et_pass_6.text.isEmpty()) {
-                    et_pass_6.clearFocus()
-                    et_pass_5.requestFocus()
-                    et_pass_5.isCursorVisible = true
-                    flip = false
-                    setBtn()
-
-                }
-            }
-        })
+        override fun onTextChanged(
+            arg0: CharSequence,
+            arg1: Int,
+            arg2: Int,
+            arg3: Int
+        ) { // TODO Auto-generated method stub
+        }
 
     }
 
@@ -236,8 +305,9 @@ class ActivationActivity : AppCompatActivity() {
         Log.d("5", char5)
         Log.d("6", char6)
         var usrEmail = FirebaseAuth.getInstance().currentUser?.email.toString()
-        Log.d("EMAIl", usrEmail)
+
         var chngEmail = usrEmail.replace('.', ',')
+        Log.d("EMAIl", chngEmail)
         if(codeCurrent == "GOOGLE"){
             //sampledata
             Toast.makeText(this@ActivationActivity, "Welcome Google Tester :)", Toast.LENGTH_SHORT).show()
@@ -312,7 +382,13 @@ class ActivationActivity : AppCompatActivity() {
         alertDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         alertDialog.setCancelable(false)
         alertDialog.tv_info_text.text = msg.toString()
+        alertDialog.btn_continue.text = "Okay"
         alertDialog.btn_info.setOnClickListener {
+            var webpage = Uri.parse("https://www.thesourcecatalyst.in/")
+            val intent = Intent(Intent.ACTION_VIEW, webpage)
+            startActivity(intent)
+        }
+        alertDialog.btn_continue.setOnClickListener {
             alertDialog.dismiss()
         }
 

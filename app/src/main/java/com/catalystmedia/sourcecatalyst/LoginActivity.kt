@@ -47,6 +47,11 @@ class LoginActivity : AppCompatActivity() {
 //            signIn()
             showAlertDialog()
         }
+        tv_privacy.setOnClickListener {
+            var webpage = Uri.parse("https://www.thesourcecatalyst.in/privacy-policy")
+            val intent = Intent(Intent.ACTION_VIEW, webpage)
+            startActivity(intent)
+        }
         btn_register_now.setOnClickListener {
             var webpage = Uri.parse("https://thesourcecatalyst.in/registration")
             val intent = Intent(Intent.ACTION_VIEW, webpage)
@@ -68,7 +73,9 @@ class LoginActivity : AppCompatActivity() {
         alertDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         alertDialog.setCancelable(false)
         alertDialog.btn_info.setOnClickListener {
-            //take user to website
+            var webpage = Uri.parse("https://www.thesourcecatalyst.in/")
+            val intent = Intent(Intent.ACTION_VIEW, webpage)
+            startActivity(intent)
         }
         alertDialog.btn_continue.setOnClickListener {
             alertDialog.dismiss()

@@ -164,6 +164,10 @@ class ProfileActivity : AppCompatActivity() {
             re_course_img_profile.setImageResource(R.drawable.ic_python)
             re_tv_title_profile.text = "Python Development"
         }
+        else if(char5 == "W" ){
+            re_course_img_profile.setImageResource(R.drawable.ic_web)
+            re_tv_title_profile.text = "Web Development"
+        }
         if (char6 == "B") {
             re_tv_level_profile.text = "Basic Level"
         } else if (char6 == "A") {

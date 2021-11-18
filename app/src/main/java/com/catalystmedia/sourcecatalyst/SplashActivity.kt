@@ -36,9 +36,10 @@ class SplashActivity : AppCompatActivity() {
                val intent = Intent(this, LoginActivity::class.java)
                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                startActivity(intent);
-           }, 2000)
+           }, 10000)
        }
         else{
+           iv_heart.visibility = View.GONE
            tv_splash_bottom.text = "Unable to reach our Servers :("
            tv_splash_bottom.setTextColor(Color.parseColor("#c40000"))
         }

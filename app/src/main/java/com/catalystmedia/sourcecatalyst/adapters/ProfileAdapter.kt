@@ -46,6 +46,10 @@ class ProfileAdapter(private var mContext: Context, private var mList: ArrayList
             holder.courseImg.setImageResource(R.drawable.ic_python)
             holder.courseTitle.text = "Python Development"
         }
+        else if (char5 == "W") {
+            holder.courseImg.setImageResource(R.drawable.ic_web)
+            holder.courseTitle.text = "Web Development"
+        }
         if (char6 == "B") {
             holder.courseLevel.text = "Basic Level"
         } else if (char6 == "A") {

@@ -25,7 +25,7 @@
     app:lottie_loop="true"
     android:scaleType="fitCenter"/>
     <androidx.appcompat.widget.AppCompatButton
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/btn_register_now"
         android:layout_width="200dp"
         android:layout_height="50dp"
@@ -68,6 +68,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
     <TextView
+        android:id="@+id/tv_privacy"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

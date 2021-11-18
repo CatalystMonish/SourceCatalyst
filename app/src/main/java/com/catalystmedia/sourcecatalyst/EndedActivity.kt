@@ -12,11 +12,13 @@ class EndedActivity : AppCompatActivity() {
         iv_cross_done.setOnClickListener{
             val intent = Intent(this@EndedActivity, ProfileActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.putExtra("isOld", true)
             startActivity(intent)
         }
         btn_end_profile.setOnClickListener{
             val intent = Intent(this@EndedActivity, ProfileActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.putExtra("isOld", true)
             startActivity(intent)
         }
     }

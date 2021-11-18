@@ -12,12 +12,12 @@
         android:layout_height="match_parent">
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/cat_lottie"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/ic_cat"
+        app:lottie_rawRes="@raw/ic_gradient"
         app:lottie_autoPlay="true"/>
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -111,7 +111,8 @@
         android:layout_marginTop="20dp"
         android:layout_marginStart="30dp"/>
     <LinearLayout
-        android:background="#202020"
+        android:id="@+id/btn_show1_ll"
+        android:background="@drawable/accordian_bg"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -148,7 +149,7 @@
        android:padding="10dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:background="#323232"
+        android:background="@drawable/accordian_bg_text"
         android:visibility="gone"
         android:id="@+id/tv_more1"
         android:textSize="16sp"
@@ -157,7 +158,8 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white"/>
     <LinearLayout
-        android:background="#202020"
+        android:id="@+id/btn_show2_ll"
+        android:background="@drawable/accordian_bg"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -194,7 +196,7 @@
         android:padding="10dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:background="#323232"
+        android:background="@drawable/accordian_bg_text"
         android:visibility="gone"
         android:id="@+id/tv_more2"
         android:textSize="16sp"
@@ -225,11 +227,11 @@
         android:text="Start Today"
         android:padding="10dp"
         android:fontFamily="@font/main"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:layout_marginBottom="20dp"
         android:textSize="17sp"
         android:textAllCaps="false"
-        android:background="@drawable/btn_bg_round"/>
+        android:background="@drawable/btn_bg_round_green"/>
 </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </FrameLayout>

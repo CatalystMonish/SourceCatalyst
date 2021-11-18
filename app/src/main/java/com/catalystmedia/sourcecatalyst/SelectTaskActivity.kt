@@ -35,8 +35,9 @@ class SelectTaskActivity : AppCompatActivity() {
         getTaskIntent = intent.getStringExtra("task").toString()
         checkDate()
         initData()
-        btn_show1_select.setOnClickListener {
+        btn_show1_select_ll.setOnClickListener {
             if (flipAccord) {
+                btn_show1_select_ll.setBackgroundResource(R.drawable.accordian_bg_top_round)
                 tv_more1_select.visibility = View.VISIBLE
                 btn_show1_select.setImageResource(R.drawable.ic_up)
                 tv_more1_select.setAlpha(0.0f);
@@ -47,6 +48,7 @@ class SelectTaskActivity : AppCompatActivity() {
                 flipAccord =false
             }
             else if (!flipAccord){
+                btn_show1_select_ll.setBackgroundResource(R.drawable.accordian_bg)
                 btn_show1_select.setImageResource(R.drawable.ic_down)
                 tv_more1_select.animate()
                     .translationY(0F)
@@ -57,8 +59,9 @@ class SelectTaskActivity : AppCompatActivity() {
                 flipAccord =true
             }
         }
-        btn_show2_select.setOnClickListener {
+        btn_show2_select_ll.setOnClickListener {
             if (flipAccord1) {
+                btn_show2_select_ll.setBackgroundResource(R.drawable.accordian_bg_top_round)
                 tv_more2_select.visibility = View.VISIBLE
                 btn_show2_select.setImageResource(R.drawable.ic_up)
                 tv_more2_select.setAlpha(0.0f);
@@ -69,6 +72,7 @@ class SelectTaskActivity : AppCompatActivity() {
                 flipAccord1 =false
             }
             else if (!flipAccord1){
+                btn_show2_select_ll.setBackgroundResource(R.drawable.accordian_bg)
                 btn_show2_select.setImageResource(R.drawable.ic_down)
                 tv_more2_select.animate()
                     .translationY(0F)
@@ -201,6 +205,9 @@ class SelectTaskActivity : AppCompatActivity() {
 
 
     private fun setText() {
-        tv_task_val.text = "Congrats end of $getTaskIntent 🎉"
+        if(getTaskIntent == "TASK2"){
+        tv_task_val.text = "Congrats end of TASK 1 🎉"}
+        else if(getTaskIntent == "TASK3"){
+            tv_task_val.text = "Congrats end of TASK 2 🎉"}
     }
 }
