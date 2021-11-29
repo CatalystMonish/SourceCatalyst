@@ -41,6 +41,11 @@ class HomeActivity : AppCompatActivity() {
     var task1Trigger = false
     var task2Trigger = false
     var flipAccord = false
+    var nodeCode = ""
+    var globalCurrentTask = ""
+    var task1Link = ""
+    var task2Link = ""
+    var task3Link = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,8 +61,14 @@ class HomeActivity : AppCompatActivity() {
         btn_guide.setOnClickListener {
 //            showResourceDialog()
             //TODO: Launch Doc Activity
-            val intent = Intent(this@HomeActivity, AllDocsActivity::class.java)
+
+
+            val currentTaskNo = globalCurrentTask
+            val intent = Intent(this@HomeActivity, FinalDocumentsActivity::class.java)
+            intent.putExtra("task", currentTaskNo)
             startActivity(intent)
+
+
         }
         iv_profile.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
@@ -93,11 +104,11 @@ class HomeActivity : AppCompatActivity() {
                 btn_show_home_ll.setBackgroundResource(R.drawable.accordian_bg_top_round)
                 tv_more_home.visibility = View.VISIBLE
                 btn_show_home.setImageResource(R.drawable.ic_up)
-                tv_more_home.setAlpha(0.0f);
+                tv_more_home.setAlpha(0.0f)
                 tv_more_home.animate()
                     .translationY(0F)
                     .alpha(1.0f)
-                    .setListener(null);
+                    .setListener(null)
                 flipAccord =false
             }
             else if (!flipAccord){
@@ -162,6 +173,7 @@ class HomeActivity : AppCompatActivity() {
                             tv_hide1_previous_status.text = statusValue
                         }
                         tv_task_no.text = "Task II"
+                        globalCurrentTask = "task2"
                         task1Trigger = true
                         val pass = "TASK2"
                         runTaskChecker(pass)
@@ -180,6 +192,7 @@ class HomeActivity : AppCompatActivity() {
                             tv_hide2_previous_status.text = statusValue
                         }
                         tv_task_no.text = "Task III"
+                        globalCurrentTask = "task3"
                         task2Trigger = true
                         val pass = "TASK3"
                         runTaskChecker(pass)
@@ -188,6 +201,7 @@ class HomeActivity : AppCompatActivity() {
                     }
                     else if(taskVal =="TASK3"){
                         tv_task_no.text = "Task III"
+                        globalCurrentTask = "task3"
                         runTaskChecker(taskVal)
                         completeInternShip()
                     }
@@ -197,6 +211,7 @@ class HomeActivity : AppCompatActivity() {
                     //submission for both 1 and 2 dosent exist
                     val pass = "TASK1"
                     tv_task_no.text = "Task I"
+                    globalCurrentTask = "task1"
                     setOngoingProblem(pass)
                     setProperProgress(pass)
                 }
@@ -243,6 +258,59 @@ class HomeActivity : AppCompatActivity() {
     private fun completeInternShip() {
         val userUID = FirebaseAuth.getInstance().currentUser?.uid.toString()
         Toast.makeText(this@HomeActivity, "Data Parceled and Uploaded", Toast.LENGTH_LONG).show()
+
+        FirebaseDatabase.getInstance().reference.child("Users").child(userUID)
+            .child("TASK1").child("link").addListenerForSingleValueEvent(object: ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if(snapshot.exists()){
+                        task1Link = snapshot.value.toString()
+                        Log.d("TASK1LINK", task1Link)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+        FirebaseDatabase.getInstance().reference.child("Users").child(userUID)
+            .child("TASK2").child("link").addListenerForSingleValueEvent(object: ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if(snapshot.exists()){
+                        task2Link = snapshot.value.toString()
+                        Log.d("TASK2LINK", task2Link)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+
+        FirebaseDatabase.getInstance().reference.child("Users").child(userUID)
+            .child("TASK3").child("link").addListenerForSingleValueEvent(object: ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if(snapshot.exists()){
+                        task3Link = snapshot.value.toString()
+                        Log.d("TASK3LINK", task3Link)
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            completeInternshipUpload() }, 1000)
+
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+
+
+    }
+
+    private fun completeInternshipUpload(){
+        val userUID = FirebaseAuth.getInstance().currentUser?.uid.toString()
         //change ongoingStatus
         //if(activated!false but History exits take to profile make start internship button visible)
         //change activated false
@@ -257,6 +325,9 @@ class HomeActivity : AppCompatActivity() {
         taskMap["completionStatus"] = "completed"
         taskMap["startDate"] = todaysDate.toString()
         taskMap["certificateLink"] = "certificate"
+        taskMap["task1Link"] = task1Link
+        taskMap["task2Link"] = task2Link
+        taskMap["task3Link"] = task3Link
         historyNode.push().updateChildren(taskMap).addOnCompleteListener { task->
             FirebaseDatabase.getInstance().reference.child("Users").child(userUID)
                 .child("TASK1").removeValue()
@@ -351,7 +422,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun taskMonitor(tvDays: Long, pass: String) {
         val userUID = FirebaseAuth.getInstance().currentUser?.uid.toString()
-        //get current day (if day> 10 ) change task and save old task data to databse and show previous task view
+        //get current day (if day> 10 ) change task and save old task data to database and show previous task view
 
         //get current day
         val currentDay = tvDays.toInt()

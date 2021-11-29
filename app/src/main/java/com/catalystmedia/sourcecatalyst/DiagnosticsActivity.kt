@@ -41,5 +41,13 @@ class DiagnosticsActivity : AppCompatActivity() {
         }
 
         tv_username_diag_copy.text = user!!.displayName.toString()
+        val userNameCurrent =  user!!.displayName.toString()
+        tv_username_diag_copy.setOnClickListener {
+            val clipboard: ClipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("userName", userNameCurrent)
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(this@DiagnosticsActivity, "Copied UserName to Clipboard", Toast.LENGTH_SHORT).show()
+        }
+
     }
 }

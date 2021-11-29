@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SourceCatalyst">
         <activity
+            android:name=".FinalDocumentsActivity"
+            android:exported="false" />
+        <activity
             android:name=".AllDocsActivity"
             android:exported="false" />
         <activity

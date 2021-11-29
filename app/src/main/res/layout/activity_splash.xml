@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            app:lottie_rawRes="@raw/ic_gradient"
+            app:lottie_rawRes="@raw/ic_gradient_new"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"/>
         <LinearLayout
@@ -87,10 +87,11 @@
         android:textColor="@color/white"
         android:textSize="15sp" />
                 <ImageView
+                    android:layout_gravity="center"
                     android:id="@+id/iv_heart"
-                    android:layout_width="24sp"
-                    android:layout_height="24sp"
-                    android:src="@drawable/ic_hearts_fill"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_heart"
                     app:tint="@color/accent" />
             </LinearLayout>
             android:layout_gravity="center">

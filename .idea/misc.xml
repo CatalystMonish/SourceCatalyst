@@ -35,11 +35,12 @@
         <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/drawable/logout_bar.xml" value="0.2614864864864865" />
         <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/drawable/stroke_round_btn.xml" value="0.2546052631578947" />
         <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_activation.xml" value="0.25" />
-        <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_all_docs.xml" value="0.25" />
+        <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_all_docs.xml" value="0.33" />
         <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_diagnostics.xml" value="0.2418918918918919" />
         <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_documents.xml" value="0.33" />
         <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_end.xml" value="0.2444078947368421" />
-        <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_ended.xml" value="0.25" />
+        <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_ended.xml" value="0.33" />
+        <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_final_documents.xml" value="0.33" />
         <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_home.xml" value="0.264" />
         <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_info.xml" value="0.2444078947368421" />
         <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_login.xml" value="0.22" />
@@ -47,11 +48,12 @@
         <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_pdfactivity.xml" value="0.2418918918918919" />
         <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_profile.xml" value="0.22" />
         <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_select_task.xml" value="0.25101351351351353" />
-        <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_splash.xml" value="0.33" />
-        <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_start_intern.xml" value="0.25" />
+        <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_splash.xml" value="0.25" />
+        <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_start_intern.xml" value="0.33" />
         <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_submission.xml" value="0.2444078947368421" />
-        <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_utilities.xml" value="0.264" />
+        <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_utilities.xml" value="0.33" />
         <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/activity_web_view.xml" value="0.2444078947368421" />
+        <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/documents_recycler.xml" value="0.67" />
         <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/loading_dialog.xml" value="0.2444078947368421" />
         <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/profile_recycler.xml" value="0.33" />
         <entry key="..\:/Users/Monish Meher/AndroidStudioProjects/SourceCatalyst/app/src/main/res/layout/resources_dialog.xml" value="0.2444078947368421" />

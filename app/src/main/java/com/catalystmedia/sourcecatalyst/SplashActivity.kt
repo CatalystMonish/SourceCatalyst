@@ -29,6 +29,9 @@ class SplashActivity : AppCompatActivity() {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_splash)
         setStatusBarTransparent()
+
+
+
         iv_splash.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate))
        if(isOnline()!!){
 //           Toast.makeText(this, "Connection Successful", Toast.LENGTH_SHORT).show()
@@ -36,7 +39,7 @@ class SplashActivity : AppCompatActivity() {
                val intent = Intent(this, LoginActivity::class.java)
                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                startActivity(intent);
-           }, 10000)
+           }, 5000)
        }
         else{
            iv_heart.visibility = View.GONE

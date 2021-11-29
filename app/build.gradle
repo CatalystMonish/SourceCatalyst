@@ -4,6 +4,7 @@ plugins {
     id 'com.google.gms.google-services'
     id 'kotlin-android-extensions'
     id 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+    id 'com.chaquo.python'
 }
 
 android {
@@ -13,10 +14,22 @@ android {
         applicationId "com.catalystmedia.sourcecatalyst"
         minSdk 21
         targetSdk 31
-        versionCode 2
-        versionName "1.1"
+        versionCode 3
+        versionName "1.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+//        ndk {
+//            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+//        }
+//
+//        python {
+//            buildPython "C:/path/to/python.exe"
+//            buildPython "C:/path/to/py.exe", "-3.8"
+//        }
+
+
+
     }
 
     buildTypes {
@@ -60,9 +73,10 @@ dependencies {
     implementation 'com.github.ome450901:SimpleRatingBar:1.5.1'
     implementation 'com.github.MasayukiSuda:EasingInterpolator:v1.3.2'
     implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'
-     implementation 'com.mikhaellopez:circularprogressbar:3.1.0'
+    implementation 'com.mikhaellopez:circularprogressbar:3.1.0'
     implementation 'com.mindorks.android:prdownloader:0.6.0'
     implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+    implementation 'com.chaquo.python:10.0.1'
 
     //onesignal
     implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'

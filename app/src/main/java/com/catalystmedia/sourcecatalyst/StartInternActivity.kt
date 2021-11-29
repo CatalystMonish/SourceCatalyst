@@ -197,6 +197,9 @@ class StartInternActivity : AppCompatActivity() {
                    tv_title1.text = taskArray[0]
                    tv_more1.text = taskArray[1]
                }
+                else{
+                   globalTask1 = "test:001"
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -212,6 +215,10 @@ class StartInternActivity : AppCompatActivity() {
                         val taskArray = snapshot.value.toString().split(":")
                         tv_title2.text = taskArray[0]
                         tv_more2.text = taskArray[1]
+                    }
+                    else{
+                        btn_show2_ll.visibility = View.GONE
+                        globalTask2 = "test:002"
                     }
                 }
 

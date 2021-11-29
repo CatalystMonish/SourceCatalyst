@@ -35,7 +35,6 @@ class DocumentsActivity : AppCompatActivity() {
             .setConnectTimeout(30000)
             .build()
         PRDownloader.initialize(applicationContext, config)
-        getLink()
         checkFiles()
         cv_download.setOnClickListener {
             downloadPDF()
@@ -110,11 +109,6 @@ class DocumentsActivity : AppCompatActivity() {
     }
 
 
-    private fun getLink() {
-        //get link from database
-        PDFlink = "https://drive.google.com/uc?export=download&id=1oUsaJx8WQPeWC7dHVYvdgQbmM4le1swL"
-
-    }
 
 
     private fun downloadPDF() {
