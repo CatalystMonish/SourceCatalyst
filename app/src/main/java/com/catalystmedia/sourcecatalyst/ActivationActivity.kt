@@ -358,12 +358,12 @@ class ActivationActivity : AppCompatActivity() {
 
                          else if (!verified) {
                             var msg =
-                                "Your activation code is VALID.\nBut your account is not yet verified please wait 2-5hrs!"
+                                "Your activation code is VALID.\nBut your account will be verified at start of internship."
                             showAlertDialog(msg)
                         }
                     } else {
                         var msg =
-                            "Your activation code is VALID.\nBut your account is not yet verified please wait 2-5hrs!"
+                            "Your activation code is VALID.\nBut your account will be verified at start of internship."
                         showAlertDialog(msg)
                     }
                 }
@@ -383,8 +383,18 @@ class ActivationActivity : AppCompatActivity() {
         alertDialog.setCancelable(false)
         alertDialog.tv_info_text.text = msg.toString()
         alertDialog.btn_continue.text = "Okay"
-        alertDialog.btn_info.setOnClickListener {
-            var webpage = Uri.parse("https://www.thesourcecatalyst.in/")
+       alertDialog.btn_info.setOnClickListener {
+//            var webpage = Uri.parse("https://www.thesourcecatalyst.in/")
+//            val intent = Intent(Intent.ACTION_VIEW, webpage)
+//            startActivity(intent)
+           var whatsappLink = "https://chat.whatsapp.com/E2kFTLGWeVAJmp8dgwfMtH"
+             Toast.makeText(this@ActivationActivity,"You May Join this Group",Toast.LENGTH_SHORT).show()
+            var webpage = Uri.parse(whatsappLink)
+
+            if (!whatsappLink.startsWith("http://") && !whatsappLink.startsWith("https://")) {
+                webpage = Uri.parse("http://$whatsappLink")
+            }
+
             val intent = Intent(Intent.ACTION_VIEW, webpage)
             startActivity(intent)
         }

@@ -138,6 +138,7 @@ class StartInternActivity : AppCompatActivity() {
                       codeMain = snapshot.value.toString()
                         Log.d("CODEMAIN", codeMain)
                         setTaskData()
+                        setCollegeName()
                         setTasks()
                     }
                 }
@@ -179,16 +180,45 @@ class StartInternActivity : AppCompatActivity() {
     }
 
 
+    private fun setCollegeName() {
+        val mainCode = codeMain.dropLast(4)
+        Log.d("This is College Code",mainCode)
+
+        FirebaseDatabase.getInstance().reference.child("Global").child("Colleges").child(mainCode.toString())
+            .addListenerForSingleValueEvent(object:ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                  if(snapshot.exists()){
+                      val collegeName = snapshot.value.toString()
+                      tv_college_name.text = collegeName
+                  }
+                    else{
+                      tv_college_name.visibility = View.GONE
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+
+            })
+
+
+    }
+
+
+
     private fun setTasks() {
         //get task type
         val mainCode = codeMain.drop(4)
         var char5 = mainCode.dropLast(1)
         var char6 = mainCode.drop(1)
         var nodeCode = char5+char6
+        var collegeCode = codeMain.dropLast(4)
     Log.d("CODELOG", nodeCode)
         //get data from firebase
 
-         FirebaseDatabase.getInstance().reference.child("Global").child("Internships")
+         FirebaseDatabase.getInstance().reference.child("Global").child("Internships").child("Private").child(collegeCode.toString())
              .child(nodeCode).child("task1").child("1").addListenerForSingleValueEvent(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                if(snapshot.exists()){
@@ -207,7 +237,7 @@ class StartInternActivity : AppCompatActivity() {
             }
 
         })
-         FirebaseDatabase.getInstance().reference.child("Global").child("Internships")
+         FirebaseDatabase.getInstance().reference.child("Global").child("Internships").child("Private").child(collegeCode.toString())
             .child(nodeCode).child("task1").child("2").addListenerForSingleValueEvent(object: ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if(snapshot.exists()) {

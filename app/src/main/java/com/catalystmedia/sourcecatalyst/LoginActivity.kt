@@ -28,6 +28,7 @@ class LoginActivity : AppCompatActivity() {
     companion object{
         private const val RC_SIGN_IN = 120
     }
+
     //for authentication
     private lateinit var mAuth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
@@ -92,6 +93,7 @@ class LoginActivity : AppCompatActivity() {
         loadDialog.show()
 
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
