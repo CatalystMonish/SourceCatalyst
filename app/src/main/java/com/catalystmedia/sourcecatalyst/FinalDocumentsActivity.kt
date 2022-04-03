@@ -68,12 +68,15 @@ class FinalDocumentsActivity : AppCompatActivity() {
         var char5 = mainCode.dropLast(1)
         var char6 = mainCode.drop(1)
         var nodeCode = char5 + char6
+        var collegeCode = codeMain.dropLast(4)
         Log.d("nodeCodeFinal", nodeCode)
-        getDocuments(nodeCode)
+        getDocuments(nodeCode,collegeCode)
     }
 
-    private fun getDocuments(code:String) {
-        FirebaseDatabase.getInstance().reference.child("Global").child("Internships").child(code)
+    private fun getDocuments(code:String,collegeCode:String) {
+        FirebaseDatabase.getInstance().reference.child("Global").child("Internships")
+            .child("Private").child(collegeCode.toString())
+            .child(code)
             .child(taskNo).child("documents").addListenerForSingleValueEvent(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {

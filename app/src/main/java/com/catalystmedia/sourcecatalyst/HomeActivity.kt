@@ -30,7 +30,6 @@ import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat.startActivity
 import com.daasuu.ei.Ease
 import com.daasuu.ei.EasingInterpolator
-import com.google.android.ads.mediationtestsuite.activities.HomeActivity
 import kotlinx.android.synthetic.main.activity_start_intern.*
 
 
@@ -54,6 +53,12 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
         initActivity()
         checkDate()
+        val endInternship = intent.getBooleanExtra("endInternship",false)
+
+        if(endInternship){
+            completeInternShip()
+        }
+
         startAnimationCustom()
         getCode()
 
@@ -68,6 +73,13 @@ class HomeActivity : AppCompatActivity() {
         btn_guide.setOnClickListener {
             val currentTaskNo = globalCurrentTask
             val intent = Intent(this@HomeActivity, FinalDocumentsActivity::class.java)
+            intent.putExtra("task", currentTaskNo)
+            startActivity(intent)
+        }
+
+        btn_videos.setOnClickListener{
+            val currentTaskNo = globalCurrentTask
+            val intent = Intent(this@HomeActivity, VideoActivity::class.java)
             intent.putExtra("task", currentTaskNo)
             startActivity(intent)
         }
@@ -112,6 +124,7 @@ class HomeActivity : AppCompatActivity() {
             checkDate()
 //            startAnimationCustom()
             getCode()
+            checkForCurrentOngoingTask3()
             checkSubmissionStatus("TASK1")
             checkSubmissionStatus("TASK2")
             checkSubmissionStatus("TASK3")
@@ -146,13 +159,10 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-
     }
 
     //inits the view and loads in user data
     private fun initActivity() {
-        //TODO:check for banners, warnings etc.
-        //get Username and Photo from google
         val userName = user!!.displayName.toString()
         Glide.with(this@HomeActivity).load(user!!.photoUrl).into(iv_profile)
         tv_user_welcome.text = "Hello, $userName"
@@ -179,6 +189,7 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
+
     private fun setDay(){
         FirebaseDatabase.getInstance().reference.child("Users").child(user!!.uid).child(
             "currentStartDate").addListenerForSingleValueEvent(object: ValueEventListener {
@@ -196,7 +207,9 @@ class HomeActivity : AppCompatActivity() {
                     val tvDays = differenceDates + 1
                     if (tvDays in 1..9) {
                         tv_top_day.text = "Day 0$tvDays"
-                    } else if (tvDays in 10..19) {
+                    }
+
+                    else if (tvDays in 10..19) {
                         tv_top_day.text = "Day $tvDays"
 
                         //TODO: Make logic to show this programmatically
@@ -223,6 +236,7 @@ class HomeActivity : AppCompatActivity() {
         })
     }
 
+
     //gets code from database and uses nextcode() to separate first tasks
     private fun getCode(){
         var usrEmail = FirebaseAuth.getInstance().currentUser?.email.toString()
@@ -247,6 +261,8 @@ class HomeActivity : AppCompatActivity() {
             })
 
     }
+
+
 
     //seprates last two chracters from maincode
     private fun nextCode() {
@@ -308,36 +324,7 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-    private fun runTaskChecker(pass: String) {
-        val userUID = FirebaseAuth.getInstance().currentUser?.uid.toString()
-        FirebaseDatabase.getInstance().reference.child("Users").child(userUID)
-            .child(pass).child("taskProblem").addListenerForSingleValueEvent(object: ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if(snapshot.exists()){
-                        var getTask = snapshot.value.toString()
-                        if(getTask ==""){
-                            taskSelector(pass)
-                        }
-                    }
-                    else{
-                        taskSelector(pass)
-                    }
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-
-            })
-    }
-
-
-    private fun taskSelector(pass: String) {
-    val intent = Intent(this@HomeActivity, SelectTaskActivity::class.java)
-    intent.putExtra("task",pass)
-    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-    startActivity(intent)
-    }
 
     private fun checkForCurrentOngoingTask2() {
         val user = FirebaseAuth.getInstance().currentUser?.uid.toString()
@@ -365,16 +352,56 @@ class HomeActivity : AppCompatActivity() {
             })
     }
 
+
+    private fun runTaskChecker(pass: String) {
+        val userUID = FirebaseAuth.getInstance().currentUser?.uid.toString()
+        FirebaseDatabase.getInstance().reference.child("Users").child(userUID)
+            .child(pass).child("taskProblem").addListenerForSingleValueEvent(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    btn_submission.visibility = View.VISIBLE
+                    if(snapshot.exists()){
+                        var getTask = snapshot.value.toString()
+                        if(getTask =="0"){
+                            taskSelector(pass)
+                        }
+                    }
+                    else{
+                        taskSelector(pass)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+    }
+
+
+    private fun taskSelector(pass: String) {
+        val intent = Intent(this@HomeActivity, SelectTaskActivity::class.java)
+        intent.putExtra("task",pass)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+    }
+
+
     //TODO: Figure out which is ongoing task
     //looks at database and sets the current problem on screen
     private fun setOngoingProblem(pass: String) {
         val user = FirebaseAuth.getInstance().currentUser?.uid.toString()
         FirebaseDatabase.getInstance().reference.child("Users").child(user).child(pass).child("taskProblem").addListenerForSingleValueEvent(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.exists()){
-                    val taskArray = snapshot.value.toString().split(":")
-                    tv_title_home.text = taskArray[0]
-                    tv_more_home.text = taskArray[1]
+                if(snapshot.exists()) {
+                    var taskStatement = snapshot.value.toString()
+                    if (taskStatement == "0") {
+                        runTaskChecker(pass)
+                    } else {
+                        val taskArray = snapshot.value.toString().split(":")
+                        tv_title_home.text = taskArray[0]
+                        tv_more_home.text = taskArray[1]
+
+                    }
                 }
             }
 
@@ -476,7 +503,63 @@ class HomeActivity : AppCompatActivity() {
                         var dayInTen = tvDays.toFloat()
                         var dayInTenRe = (10 - dayInTen).toInt()
                         progress_day.progress = dayInTen
+                        if(dayInTen > 0){
                         tv_days_left.text =  "$dayInTenRe Days Left"
+                        }
+                        else{
+                            tv_days_left.text =  "0 Days Left"
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+    }
+
+    private fun completeInternShip() {
+        val userUID = FirebaseAuth.getInstance().currentUser?.uid.toString()
+
+        FirebaseDatabase.getInstance().reference.child("Users").child(userUID)
+            .child("TASK1").child("link").addListenerForSingleValueEvent(object: ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if(snapshot.exists()){
+                        task1Link = snapshot.value.toString()
+                        Log.d("TASK1LINK", task1Link)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+        FirebaseDatabase.getInstance().reference.child("Users").child(userUID)
+            .child("TASK2").child("link").addListenerForSingleValueEvent(object: ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if(snapshot.exists()){
+                        task2Link = snapshot.value.toString()
+                        Log.d("TASK2LINK", task2Link)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+
+        FirebaseDatabase.getInstance().reference.child("Users").child(userUID)
+            .child("TASK3").child("link").addListenerForSingleValueEvent(object: ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if(snapshot.exists()){
+                        task3Link = snapshot.value.toString()
+                        Log.d("TASK3LINK", task3Link)
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            completeInternshipUpload() }, 1000)
+
                     }
                 }
 
@@ -488,6 +571,47 @@ class HomeActivity : AppCompatActivity() {
     }
 
 
+
+
+    private fun completeInternshipUpload(){
+        val userUID = FirebaseAuth.getInstance().currentUser?.uid.toString()
+        //change ongoingStatus
+        //if(activated!false but History exits take to profile make start internship button visible)
+        //change activated false
+        //parcel data into history save title, code, status, startdate, cetificateLink
+        val mainCode = codeMain.drop(4)
+        var char5 = mainCode.dropLast(1)
+        var char6 = mainCode.drop(1)
+        var nodeCode = char5+char6
+        val historyNode:DatabaseReference = FirebaseDatabase.getInstance().reference.child("Users").child(userUID).child("History")
+        val taskMap = HashMap<String, Any>()
+        taskMap["courseID"] = nodeCode
+        taskMap["completionStatus"] = "completed"
+        taskMap["startDate"] = todaysDate.toString()
+        taskMap["certificateLink"] = "certificate"
+        taskMap["task1Link"] = task1Link
+        taskMap["task2Link"] = task2Link
+        taskMap["task3Link"] = task3Link
+        historyNode.push().updateChildren(taskMap).addOnCompleteListener { task->
+            FirebaseDatabase.getInstance().reference.child("Users").child(userUID)
+                .child("TASK1").removeValue()
+            FirebaseDatabase.getInstance().reference.child("Users").child(userUID)
+                .child("TASK2").removeValue()
+            FirebaseDatabase.getInstance().reference.child("Users").child(userUID)
+                .child("TASK3").removeValue()
+            FirebaseDatabase.getInstance().reference.child("Users").child(userUID)
+                .child("ongoingStatus").removeValue()
+            FirebaseDatabase.getInstance().reference.child("Users").child(userUID)
+                .child("currentActivated").removeValue().addOnCompleteListener { task->
+                    //take to new activity
+                    val intent = Intent(this@HomeActivity, EndedActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    intent.putExtra("isOld", true)
+                    startActivity(intent)
+                }
+        }
+
+    }
 
 
 }

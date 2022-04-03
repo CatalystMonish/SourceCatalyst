@@ -14,6 +14,7 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_submission.*
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -30,6 +31,7 @@ class SubmissionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_submission)
         checkDate()
         taskNo = intent.getStringExtra("task").toString()
+        Log.e("PASSEDVALUE", taskNo)
         tv_submission_title.text = "Submission for $taskNo"
         simpleRatingBar.setOnRatingChangeListener { ratingBar, rating, fromUser ->
             triggeredRate = true
@@ -90,12 +92,14 @@ class SubmissionActivity : AppCompatActivity() {
             taskMap["link"]= et_github_link.text.toString()
             taskNode.updateChildren(taskMap).addOnCompleteListener { task->
                 if(task.isSuccessful){
+                    createNextNewTask()
                     Utils.hideSoftKeyBoard(this@SubmissionActivity, btn_create_submission )
                     //move to nextTask
                     Toast.makeText(this@SubmissionActivity,"Task Submission Done Successfully!",Toast.LENGTH_SHORT).show()
                     //showerConfetti
                     lottie_celb.visibility = View.VISIBLE
                     lottie_celb.playAnimation()
+                    if(taskNoUpper!="TASK3")
                     Handler(Looper.getMainLooper()).postDelayed({
                         val intent = Intent(this@SubmissionActivity, HomeActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -124,6 +128,34 @@ class SubmissionActivity : AppCompatActivity() {
     private fun completeInternShip() {
         //data parceler
         //collect internship entries
+        Handler(Looper.getMainLooper()).postDelayed({
+            val intent = Intent(this@SubmissionActivity, HomeActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.putExtra("endInternship",true)
+            startActivity(intent);
+        }, 1000)
         Toast.makeText(this@SubmissionActivity, "Data Parceled and Uploaded", Toast.LENGTH_LONG).show()
+    }
+
+
+
+    //update v1.3
+
+
+    //this function creates the next new blank task
+    private fun createNextNewTask(){
+        var taskNoUpper = ""
+        if(taskNo == "Task I"){
+            taskNoUpper = "TASK1"
+        }
+        else if(taskNo == "Task II"){
+            taskNoUpper = "TASK2"
+        }
+        else if(taskNo == "Task III"){
+            taskNoUpper = "TASK3"
+        }
+
+        val user = FirebaseAuth.getInstance().currentUser?.uid.toString()
+        FirebaseDatabase.getInstance().reference.child("Users").child(user).child(taskNoUpper).child("taskProblem").setValue("0")
     }
 }

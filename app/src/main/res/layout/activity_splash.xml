@@ -102,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:fontFamily="@font/main"
-                android:text="v1.3 Gamma"
+                android:text="v1.3.1 Gamma"
                 android:textAlignment="center"
                 android:textColor="#5A5A5A"
                 android:textSize="15sp" />

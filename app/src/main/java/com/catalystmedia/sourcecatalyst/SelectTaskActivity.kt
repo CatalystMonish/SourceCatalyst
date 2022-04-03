@@ -29,12 +29,24 @@ class SelectTaskActivity : AppCompatActivity() {
     var flipAccord1 = true
     var globalTask1 = ""
     var globalTask2 = ""
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_task)
-        getTaskIntent = intent.getStringExtra("task").toString()
+        val getTask = intent.getStringExtra("task").toString()
+
+        if(getTask=="TASK1"){
+            getTaskIntent = "TASK2"
+        }else if(getTask=="TASK2"){
+            getTaskIntent = "TASK3"
+        }
+
+        Log.e("PASSEDVALUETSKSELECT", getTaskIntent)
         checkDate()
         initData()
+
+
         btn_show1_select_ll.setOnClickListener {
             if (flipAccord) {
                 btn_show1_select_ll.setBackgroundResource(R.drawable.accordian_bg_top_round)
@@ -146,6 +158,7 @@ class SelectTaskActivity : AppCompatActivity() {
                         Log.d("CODEMAIN", codeMain)
                         setText()
                         loadTasks()
+                        setCollegeName()
                     }
                 }
 
@@ -157,6 +170,33 @@ class SelectTaskActivity : AppCompatActivity() {
 
     }
 
+    private fun setCollegeName() {
+        val mainCode = codeMain.dropLast(4)
+        Log.d("This is College Code",mainCode)
+
+        FirebaseDatabase.getInstance().reference.child("Global").child("Colleges").child(mainCode.toString())
+            .addListenerForSingleValueEvent(object:ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if(snapshot.exists()){
+                        val collegeName = snapshot.value.toString()
+                        tv_college_name_select.text = collegeName
+                    }
+                    else{
+                        tv_college_name_select.visibility = View.GONE
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+
+            })
+
+
+    }
+
+
 
     private fun loadTasks() {
         //get task type
@@ -164,8 +204,10 @@ class SelectTaskActivity : AppCompatActivity() {
         var char5 = mainCode.dropLast(1)
         var char6 = mainCode.drop(1)
         var nodeCode = char5+char6
-        val taskNo = getTaskIntent.toLowerCase().toString()
-        FirebaseDatabase.getInstance().reference.child("Global").child("Internships")
+        var collegeCode = codeMain.dropLast(4)
+        var taskNo = getTaskIntent.toLowerCase().toString()
+
+        FirebaseDatabase.getInstance().reference.child("Global").child("Internships").child("Private").child(collegeCode.toString())
             .child(nodeCode).child(taskNo).child("1").addListenerForSingleValueEvent(object:
                 ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -185,7 +227,7 @@ class SelectTaskActivity : AppCompatActivity() {
                 }
 
             })
-        FirebaseDatabase.getInstance().reference.child("Global").child("Internships")
+        FirebaseDatabase.getInstance().reference.child("Global").child("Internships").child("Private").child(collegeCode.toString())
             .child(nodeCode).child(taskNo).child("2").addListenerForSingleValueEvent(object: ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if(snapshot.exists()) {
