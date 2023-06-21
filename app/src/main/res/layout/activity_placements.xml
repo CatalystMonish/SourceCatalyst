@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/black"
+    android:background="@color/white"
     tools:context=".PlacementsActivity">
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,13 +18,13 @@
             android:layout_height="35dp"
             android:layout_marginStart="20dp"
             android:src="@drawable/ic_back"
-            app:tint="@color/white" />
+            app:tint="@color/black" />
         <TextView
             android:layout_width="wrap_content"
             android:textSize="22sp"
             android:layout_gravity="center"
             android:text="Placements"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:fontFamily="@font/main"
             android:layout_marginStart="10dp"
             android:layout_height="wrap_content"/>
@@ -43,7 +43,7 @@
             android:orientation="vertical"
             android:layout_height="wrap_content">
             <LinearLayout
-                android:backgroundTint="#313131"
+                android:backgroundTint="#DCDCDC"
                 android:background="#313131"
                 android:padding="10dp"
 
@@ -72,11 +72,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Orena Solutions"
-                            android:textColor="@color/white"
+                            android:textColor="@color/black"
                             android:fontFamily="@font/main"
                             android:textSize="18sp"/>
                         <TextView
-                            android:textColor="@color/text_grey"
+                            android:textColor="#5A5A5A"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Orena Solutions is a visionary ICT company, headquartered in ..."
@@ -108,7 +108,7 @@
         android:textAlignment="center"
         android:text="Learn how to become our patner?"
         android:fontFamily="@font/main"
-        android:textColor="@color/text_grey"
+        android:textColor="#686868"
         android:layout_marginBottom="10dp"
         android:textSize="15sp"/>
 </LinearLayout>

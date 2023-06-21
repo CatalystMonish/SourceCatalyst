@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/black"
+    android:background="@color/white"
     tools:context=".ActivationActivity">
     <LinearLayout
         android:id="@+id/main_ll_activation"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -18,7 +18,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="Activation Code"
-    android:textColor="@color/white"
+    android:textColor="@color/black"
     android:textSize="25sp"
     android:fontFamily="@font/main"
     android:textAlignment="center"/>

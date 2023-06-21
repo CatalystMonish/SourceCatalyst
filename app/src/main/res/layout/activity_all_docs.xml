@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".AllDocsActivity">
     <LinearLayout
@@ -19,14 +19,14 @@
             android:layout_height="35dp"
             android:layout_marginStart="20dp"
             android:src="@drawable/ic_back"
-            app:tint="@color/white" />
+            app:tint="@color/black" />
         <TextView
             android:layout_width="wrap_content"
             android:textSize="22sp"
             android:layout_gravity="center"
             android:text="Documents"
             android:layout_weight="1"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:fontFamily="@font/main"
             android:layout_marginStart="10dp"
             android:layout_height="wrap_content"/>
@@ -38,7 +38,7 @@
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         app:cardCornerRadius="10dp"
-        app:cardBackgroundColor="#313131"
+        app:cardBackgroundColor="#DCDCDC"
         android:layout_height="wrap_content">
     <LinearLayout
         android:orientation="horizontal"
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content">
         <androidx.cardview.widget.CardView
             android:layout_width="60sp"
-            app:cardBackgroundColor="#565656"
+            app:cardBackgroundColor="#B1B1B1"
             android:layout_height="60sp"
             android:layout_margin="10sp"
             app:cardCornerRadius="10dp">
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:text="Task Documents"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:fontFamily="@font/main"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -73,7 +73,7 @@
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         app:cardCornerRadius="10dp"
-        app:cardBackgroundColor="#313131"
+        app:cardBackgroundColor="#DCDCDC"
         android:layout_height="wrap_content">
         <LinearLayout
             android:orientation="horizontal"
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content">
             <androidx.cardview.widget.CardView
                 android:layout_width="60sp"
-                app:cardBackgroundColor="#565656"
+                app:cardBackgroundColor="#B1B1B1"
                 android:layout_height="60sp"
                 android:layout_margin="10sp"
                 app:cardCornerRadius="10dp">
@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:text="All Cheatsheets"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:fontFamily="@font/main"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
